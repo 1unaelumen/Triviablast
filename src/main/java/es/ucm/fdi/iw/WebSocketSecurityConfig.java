@@ -24,8 +24,8 @@ public class WebSocketSecurityConfig {
         // necesario estar logeado para poder enviar
         // necesario ser admin para poder enviar a /admin/**, y para poder recibir de /admin/**
         messages
-                .simpDestMatchers("/admin/**").hasRole(User.Role.ADMIN.toString())
-                .simpSubscribeDestMatchers("/admin/**").hasRole(User.Role.ADMIN.toString())
+                .simpDestMatchers("/admin/**").hasRole("ADMIN")
+                .simpSubscribeDestMatchers("/admin/**").hasRole("ADMIN")
                 .anyMessage().authenticated();
         return messages.build();
     }

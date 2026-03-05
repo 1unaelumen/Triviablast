@@ -4,7 +4,6 @@ import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.Transferable;
 import es.ucm.fdi.iw.model.User;
-import es.ucm.fdi.iw.model.User.Role;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -152,7 +151,7 @@ public class UserController {
 
     User requester = (User) session.getAttribute("u");
     User target = null;
-    if (id == -1 && requester.hasRole(Role.ADMIN)) {
+    if (id == -1 && requester.hasRole("ADMIN")) {
       // create new user with random password
       target = new User();
       target.setPassword(encodePassword(generateRandomBase64Token(12)));
@@ -167,7 +166,7 @@ public class UserController {
     model.addAttribute("user", target);
 
     if (requester.getId() != target.getId() &&
-        !requester.hasRole(Role.ADMIN)) {
+        !requester.hasRole("ADMIN")) {
       throw new NoEsTuPerfilException();
     }
 
@@ -235,7 +234,7 @@ public class UserController {
     // check permissions
     User requester = (User) session.getAttribute("u");
     if (requester.getId() != target.getId() &&
-        !requester.hasRole(Role.ADMIN)) {
+        !requester.hasRole("ADMIN")) {
       throw new NoEsTuPerfilException();
     }
 

@@ -29,10 +29,6 @@ import java.util.List;
 })
 @Table(name = "IWUser")
 public class User implements Transferable<User.Transfer> {
-    public enum Role {
-        USER,
-        ADMIN
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -48,13 +44,7 @@ public class User implements Transferable<User.Transfer> {
     @Column(nullable=false)
     private String email;
 
-    public enum Visibility {
-        PUBLIC,
-        HIDDEN
-    }
-
-    @Enumerated(EnumType.STRING)
-    private Visibility estadoVisibilidad = Visibility.PUBLIC;
+    private String estadoVisibilidad = "PUBLIC";
 
     private Integer totalPoints = 0;
 
@@ -85,19 +75,13 @@ public class User implements Transferable<User.Transfer> {
     private List<Game> partidasCreadas = new ArrayList<>();
 
     // Games played by this user
-    @ManyToMany
-    @JoinTable(
-        name = "user_games",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "game_id")
-    )
-    private List<Game> partidasJugadas = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<Player> players = new ArrayList<>();
+    
 
-
-    public boolean hasRole(Role role) {
+    public boolean hasRole(String role) {
         if (roles == null) return false;
-        String roleName = role.name();
-        return Arrays.asList(roles.split(",")).contains(roleName);
+        return Arrays.asList(roles.split(",")).contains(role);
     }
 
     @Getter

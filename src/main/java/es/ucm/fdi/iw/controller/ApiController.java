@@ -30,7 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.User;
-import es.ucm.fdi.iw.model.User.Role;
 import io.karatelabs.js.Context;
 import io.karatelabs.js.Interpreter;
 import io.karatelabs.js.Node;
@@ -152,7 +151,7 @@ public Map<String, Long> usersCount() {
         .setParameter("key", name).getSingleResult();  
 
     // verify permissions
-    if (! sender.hasRole(Role.ADMIN) && ! target.getMembers().contains(sender)) {
+    if (! sender.hasRole("ADMIN") && ! target.getMembers().contains(sender)) {
       response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       return Map.of("error", "user not in group");
     }
@@ -193,7 +192,7 @@ public Map<String, Long> usersCount() {
           .setParameter("key", name).getSingleResult();  
   
       // verify permissions
-      if (! requester.hasRole(Role.ADMIN) && ! target.getMembers().contains(requester)) {
+      if (! requester.hasRole("ADMIN") && ! target.getMembers().contains(requester)) {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         return Map.of("error", "user not in group");
       } 

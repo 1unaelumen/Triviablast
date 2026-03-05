@@ -19,15 +19,12 @@ public class Game {
     @Column(nullable = false)
     private int numQuestions;
 
-    @ElementCollection(targetClass = Category.class)
-    @Enumerated(EnumType.STRING)
+    @ElementCollection
     @CollectionTable(name = "game_categories", joinColumns = @JoinColumn(name = "game_id"))
-    @Column(name = "category")
-    private Set<Category> categories;
+    private Set<String> categories;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Difficulty difficulty;
+    private String difficulty;
 
     // HOW TO GENERATE?
     @Column(unique = true, nullable = false)
@@ -39,13 +36,13 @@ public class Game {
     @Column(columnDefinition = "TEXT")
     private String internalState; // this is later turned into JSON
 
-    @Enumerated(EnumType.STRING)
-    private State gameState;
+    private String gameState;
 
     @ManyToOne
     @JoinColumn(name = "host_id", nullable = false)
     private User host;
 
-    @ManyToMany(mappedBy = "partidasJugadas")
-    private List<User> players = new ArrayList<>();
+    @OneToMany(mappedBy = "game")
+    private List<Player> players = new ArrayList<>();
+
 }

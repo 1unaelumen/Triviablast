@@ -108,7 +108,7 @@ public class AdminController {
           .encode("aa"));
             //UserController.generateRandomBase64Token(9)));
       u.setEnabled(true);
-      u.setRoles(User.Role.USER.toString());
+      u.setRoles("USER");
       entityManager.persist(u);
       if (i%2 == 0) {
         g1.getMembers().add(u);
