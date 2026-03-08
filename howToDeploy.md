@@ -1,7 +1,7 @@
 # How to deploy to Docker
 
 1. SSH por navegador en https://guacamole.containers.fdi.ucm.es
-2. El puesto 80 de la aplicación estará expuesto en https://vmXXX.containers.fdi.ucm.es, somos root en nuestras VMs. 
+2. El puerto 80 de la aplicación estará expuesto en https://vmXXX.containers.fdi.ucm.es, somos root en nuestras VMs. 
 3. Crear perfiles: SPRING_PROFILES_ACTIVE a x hace que se aplica application-x.properties sobre el application.properties
 4. Para conectarse con terminal (útil para tener la aplicación lanzada dos veces en una máquina):
     4.1 Hay que estar conectado a la VPN o en la UCM
