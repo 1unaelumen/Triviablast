@@ -73,7 +73,6 @@ public class SecurityConfig {
 								"/multi_game",
 								"/multi_victoryscr",
 								"/scoreboard",
-								"single_game",
 								"profile")
 						.permitAll()
 
