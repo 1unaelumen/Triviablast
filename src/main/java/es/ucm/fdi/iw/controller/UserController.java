@@ -134,7 +134,35 @@ public class UserController {
   public String index(@PathVariable long id, Model model, HttpSession session) {
     User target = entityManager.find(User.class, id);
     model.addAttribute("user", target);
-    return "user";
+    return "profile";
+  }
+
+    /**
+   * Alter or create a user
+   */
+  @PostMapping("/register")
+  @Transactional
+  public String register(
+      HttpServletResponse response,
+      @ModelAttribute User edited,
+      @RequestParam(required = false) String pass2,
+      Model model, HttpSession session) throws IOException {
+
+      User target=new User();
+      if (!edited.getPassword().equals(pass2)) {
+        log.warn("Passwords do not match - returning to user form");
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return "register";
+      }
+        // save encoded version of password
+      target.setPassword(encodePassword(edited.getPassword()));
+      target.setUsername(edited.getUsername());
+      target.setEmail(edited.getEmail());
+      target.setRoles("USER");
+
+
+      entityManager.persist(target);
+      return "login";
   }
 
   /**

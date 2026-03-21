@@ -63,7 +63,8 @@ public class SecurityConfig {
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/", "/error").permitAll()
 
 						//vistas públicas
-						.requestMatchers(
+						.requestMatchers(								
+								"/user/register",
 								"/proposal",
 								"/authors",
 								"/index",

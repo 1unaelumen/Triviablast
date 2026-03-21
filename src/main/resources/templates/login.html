@@ -47,7 +47,7 @@
                         </form>
 
                         <!-- REGISTER FORM -->
-                        <form id="registerForm" method="post" th:action="@{/register}" style="display: none;">
+                        <form id="registerForm" method="post" th:action="@{/user/register}" style="display: none;">
 
                             <h2 class="mb-4 text-center">Create Account</h2>
 
@@ -61,6 +61,11 @@
 
                             <div class="mb-3">
                                 <input type="password" name="password" class="form-control" placeholder="Password"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="password" name="pass2" class="form-control" placeholder="Repeat Password"
                                     required>
                             </div>
 
