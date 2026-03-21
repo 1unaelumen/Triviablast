@@ -8,10 +8,8 @@
 <body>
     <!-- ver https://getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/ -->
     <footer th:fragment="footer" class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <span class="text-muted">Aplicación de plantilla de IW 2025-26. Accede a la última versión (y propón mejoras, es
-            <a href="https://www.apache.org/licenses/LICENSE-2.0">código abierto</a>) en el
-            <a href="https://github.com/manuel-freire/iw/blob/main/plantilla">repositorio</a>.</span>
+        <div class="container justify-content-center d-flex">
+            <span class="text-muted">Aplicación web para Trivia online. Lee el <a href="https://github.com/inestrivino/TriviaBlast" target="_blank">código</a>.</span>
         </div>
         <!-- Bootstrap -->
         <script th:src="@{/js/bootstrap.bundle-5.3.3.js}" src="js/bootstrap.bundle-5.3.3.js"></script>
@@ -19,8 +17,8 @@
         <!-- Websockets -->
         <script th:src="@{/js/stomp.js}" src="js/stomp.js"></script>
         <script th:src="@{/js/iw.js}" src="js/iw.js"></script>
-
-        <!-- Otros scripts de interacción, aquí -->
+        <script th:src="@{/js/triviablast.js}" src="js/triviablast.js"></script>
+        <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
     </footer>
 </body>
 
