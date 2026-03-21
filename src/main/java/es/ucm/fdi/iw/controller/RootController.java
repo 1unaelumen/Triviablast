@@ -9,9 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import es.ucm.fdi.iw.controller.GameSetupDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -78,30 +81,39 @@ public class RootController {
         return "profile";
     }
 
-    @GetMapping("/single_game")
-    public String single_game(Model model) {
-        //TO DO: IN THE FUTURE WE WILL HAVE A USER CHOICES OBJECT THAT WILL CHANGE THE API CALL BASED ON WHAT THE USER WANTS FOR THE GAME
-        RestTemplate rest = new RestTemplate();
-        String url = "https://opentdb.com/api.php?amount=1";
+    // SINGLE GAME CONTROLLER
+    // TO DO: WHAT ABOUT AUTHENTICATED REQUESTS?
 
+    @GetMapping("/single_game_setup")
+    public String single_game_setup(Model model) {
+        return "single_game_setup";
+    }
+
+    @PostMapping("/start_single_game")
+    public String startSingleGame(@ModelAttribute GameSetupDTO setup, Model model) {
+
+        String url = "https://opentdb.com/api.php?amount=" + setup.getQuestionCount();
+
+        if (setup.getCategory() != null && !setup.getCategory().isEmpty()) {
+            url += "&category=" + setup.getCategory();
+        }
+
+        if (setup.getDifficulty() != null && !setup.getDifficulty().isEmpty()) {
+            url += "&difficulty=" + setup.getDifficulty().toLowerCase();
+        }
+
+        RestTemplate rest = new RestTemplate();
         Map<String, Object> response;
 
         try {
             response = rest.getForObject(url, Map.class);
         } catch (HttpClientErrorException.TooManyRequests ex) {
-            // API rate limit hit, returning a dummy object
-            response = Map.of(
-                    "response_code", 5,
-                    "results", List.of());
+            response = Map.of("response_code", 5, "results", List.of());
         } catch (RestClientException ex) {
-            // Other errors:
-            response = Map.of(
-                    "response_code", 1,
-                    "results", List.of());
+            response = Map.of("response_code", 1, "results", List.of());
         }
 
         model.addAttribute("questionData", response);
         return "single_game";
     }
-
 }
