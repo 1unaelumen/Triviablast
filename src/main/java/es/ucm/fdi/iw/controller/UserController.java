@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -140,13 +141,15 @@ public class UserController {
       HttpServletResponse response,
       @ModelAttribute User edited,
       @RequestParam(required = false) String pass2,
+      RedirectAttributes redirectAttributes,
       Model model, HttpSession session) throws IOException {
 
     User target = new User();
     if (!edited.getPassword().equals(pass2)) {
-      log.warn("Passwords do not match - returning to user form");
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      return "register";
+      log.warn("Passwords do not match - returning to register form");
+      model.addAttribute("user", edited);
+      redirectAttributes.addFlashAttribute("error", "password_mismatch");
+        return "redirect:/login"; 
     }
     // save encoded version of password
     target.setPassword(encodePassword(edited.getPassword()));
@@ -155,7 +158,7 @@ public class UserController {
     target.setRoles("USER");
 
     entityManager.persist(target);
-    return "login";
+    return "redirect:/login";
   }
 
   /**
