@@ -47,5 +47,14 @@ public class Game {
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true) // los mensajes pertenecen completamente al juego, si se borra el juego se borran los mensajes
     private List<Message> messages = new ArrayList<>();
-
+    
+    @PrePersist
+    public void generateCode() {
+        if (this.code == null) {
+            this.code = java.util.UUID.randomUUID()
+                    .toString()
+                    .substring(0, 6)
+                    .toUpperCase();
+        }
+    }
 }
