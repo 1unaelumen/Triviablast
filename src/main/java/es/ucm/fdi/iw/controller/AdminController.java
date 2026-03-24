@@ -58,7 +58,7 @@ public class AdminController {
     log.info("Admin acaba de entrar");
     model.addAttribute("users",
         entityManager.createQuery("select u from User u").getResultList());
-    return "admin";
+    return "redirect:/user/profile";  
   }
 
   @PostMapping("/toggle/{id}")
