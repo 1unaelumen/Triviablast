@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,11 +20,16 @@ import es.ucm.fdi.iw.controller.DTOs.AnswerResDTO;
 import es.ucm.fdi.iw.controller.DTOs.GameSetupDTO;
 import es.ucm.fdi.iw.controller.DTOs.QuestionDataPrivateDTO;
 import es.ucm.fdi.iw.controller.DTOs.QuestionDataPublicDTO;
+import es.ucm.fdi.iw.model.User;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Controller
 @RequestMapping("/game")
 public class GameController {
+    @Autowired
+    private EntityManager entityManager;
 
     @PostMapping("/start_single_game")
     public String startGame(@ModelAttribute GameSetupDTO setup,
@@ -69,15 +75,28 @@ public class GameController {
 
     @PostMapping("/answer")
     @ResponseBody
+    @Transactional
     public AnswerResDTO checkAnswer(@RequestBody AnswerReqDTO req, HttpSession session) {
         List<QuestionDataPrivateDTO> questions = (List<QuestionDataPrivateDTO>) session.getAttribute("questions");
+
         if (questions == null || req.getQuestionId() >= questions.size()) {
             return new AnswerResDTO(false, null);
         }
 
         QuestionDataPrivateDTO q = questions.get(req.getQuestionId());
-
         boolean isCorrect = q.getCorrectAnswer().equals(req.getAnswer());
+
+        if (isCorrect) {
+            User user = (User) session.getAttribute("u");
+            if (user != null) {
+                User managedUser = entityManager.find(User.class, user.getId());
+
+                managedUser.setTotalPoints(
+                        managedUser.getTotalPoints() + 10);
+
+                session.setAttribute("u", managedUser);
+            }
+        }
 
         return new AnswerResDTO(isCorrect, q.getCorrectAnswer());
     }
