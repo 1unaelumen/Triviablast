@@ -29,6 +29,7 @@ import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/game")
@@ -130,12 +131,14 @@ public class GameController {
         return code;
     }
     @PostMapping("/join")
-    @ResponseBody
-    public String joinGame(@RequestParam String code, HttpSession session) {
+    public String joinGame(@RequestParam String code, HttpSession session, Model model) {
 
         MultiplayerGameSession game = games.get(code);
 
-        if (game == null) return "NOT_FOUND";
+        if (game == null){
+            model.addAttribute("error", "Game not found");
+            return "join_game"; 
+        } 
 
         User user = (User) session.getAttribute("u");
         game.getPlayers().add(user);

@@ -245,6 +245,7 @@ function initMultiplayer() {
     let currentIndex = 0;
 
     const statusEl = document.getElementById("gameStatus");
+    const nextBtn = document.getElementById("nextBtn");
 
     function updateStatus() {
         const total = window.questions.length;
@@ -273,6 +274,7 @@ function initMultiplayer() {
 
         answersEl.innerHTML = "";
         feedbackEl.innerHTML = "";
+        nextBtn.disabled = true;
 
         q.answers.forEach(answer => {
             const btn = document.createElement("button");
