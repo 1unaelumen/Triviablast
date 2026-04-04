@@ -26,7 +26,10 @@ public class Game {
     @Column(nullable = false)
     private String difficulty;
 
-    // Note: code attribute being unique is not ideal as it means that there is a reachable limit in number of possible codes. However, JPA does not support (to our knowledge) conditional keys, and this system allows for 2.1 billion different codes which is enough for our application's current uses
+    // Note: code attribute being unique is not ideal as it means 
+    // that there is a reachable limit in number of possible codes. 
+    // However, JPA does not support (to our knowledge) conditional keys, 
+    // and this system allows for 2.1 billion different codes which is enough for our application's current uses
     @Column(unique = true, nullable = false)
     private String code;
 

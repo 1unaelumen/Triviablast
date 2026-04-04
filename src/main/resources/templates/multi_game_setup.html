@@ -2,6 +2,10 @@
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta name = "_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- lines 5,6 are stricly for error 403 Forbidden access,
+      because the server doesn't allow me-->
     <th:block th:replace="~{fragments/head :: header}" />
     <title>Multiplayer Game Setup</title>
     <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
@@ -17,9 +21,11 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
                     <h1 class="mb-5 text-center">Game Setup</h1>
 
-                    <form th:action="@{"/create/multiplayer"}" method="post">
+                    <form id="createGameForm">
+                        <p id="gameCode" class="text-center mt-3"></p>
 
                         <!-- Category-->
+
                         <div class="mb-5 text-start">
                             <label class="form-label fs-5">Category:</label>
                             <select class="form-select" name="category">
@@ -85,7 +91,47 @@
     </main>
 
     <th:block th:replace="~{fragments/footer.html :: footer}" />
+    <script>
+    console.log("SCRIPT LOADED");
 
+    window.addEventListener("DOMContentLoaded", () => {
+
+        const form = document.getElementById("createGameForm");
+
+        if (!form) {
+            console.log("FORM NOT FOUND");
+            return;
+        }
+
+        form.addEventListener("submit", async (e) => {
+            console.log("CLICK");
+
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            const token = document.querySelector('meta[name="_csrf"]').content;
+            const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+            const res = await fetch("/game/create_multiplayer_game", {
+                method: "POST",
+                headers: {
+                    [header]: token
+                },
+                body: formData
+            });
+
+            const code = await res.text();
+
+            document.getElementById("gameCode").innerText = "Game Code: " + code;
+
+            setTimeout(() => {
+                window.location.href = "/game/multi_game";
+            }, 3000);
+        });
+
+    });
+    </script>
 </body>
 
 </html>

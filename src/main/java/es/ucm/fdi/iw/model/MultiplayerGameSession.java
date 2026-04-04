@@ -18,6 +18,9 @@ public class MultiplayerGameSession {
     private List<User> players = new ArrayList<>();
 
     private Map<Long, Integer> scores = new HashMap<>();
+    private int currentQuestionIndex = 0;
+    private int currentPlayerIndex = 0;
+    private boolean finished = false;
 
     public String getCode() {
         return code;
@@ -49,5 +52,26 @@ public class MultiplayerGameSession {
 
     public Map<Long, Integer> getScores() {
         return scores;
+    }
+    public QuestionDataPrivateDTO getCurrentQuestion() {
+    if (questions == null || questions.isEmpty()) return null;
+        return questions.get(currentQuestionIndex);
+    }
+
+    public User getCurrentPlayer() {
+        if (players.isEmpty()) return null;
+        return players.get(currentPlayerIndex);
+    }
+
+    public void nextTurn() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    }
+
+    public void nextQuestion() {
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex >= questions.size()) {
+            finished = true;
+        }
     }
 }

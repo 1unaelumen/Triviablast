@@ -110,7 +110,7 @@ public class GameController {
     }
 
     // multiplayer game
-    @PostMapping("/create/multiplayer")
+    @PostMapping("/create_multiplayer_game")
     @ResponseBody
     public String createGame(@ModelAttribute GameSetupDTO setup, HttpSession session) {
 
