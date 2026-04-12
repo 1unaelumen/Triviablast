@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+let numSquares = 0;
+
 /* =========================
    AUTH (Login / Register)
 ========================= */
@@ -67,13 +69,21 @@ function initBoard() {
 
         for (let i = 0; i < filas * columnas; i++) {
 
+            let textColor = '#111111';
+            let rectColor = '#e0e0e0';
+            if (i < numSquares) {
+                rectColor = '#005200';
+                textColor = 'aliceblue';
+            }
+
             draw.rect(cellSize, cellSize)
                 .move(x * cellSize, y * cellSize)
-                .fill('#e0e0e0')
+                .fill(rectColor)
                 .stroke({ width: 1, color: '#999' });
 
             draw.text(number.toString())
                 .font({ size: cellSize / 2.5, family: 'Arial', anchor: 'middle' })
+                .fill(textColor)
                 .center(
                     x * cellSize + cellSize / 2,
                     y * cellSize + cellSize / 2
@@ -94,6 +104,7 @@ function initBoard() {
 
     redrawBoard();
     window.addEventListener('resize', redrawBoard);
+    window.redrawBoard = redrawBoard;
 }
 
 /* =========================
@@ -263,9 +274,11 @@ function initMultiplayer() {
     stomp.connect(connectHeaders, () => {
 
         console.log("Connected to multiplayer");
+        console.log(window.gameCode);
         stomp.subscribe(`/topic/game/${window.gameCode}`, (msg) => {
             const data = JSON.parse(msg.body);
             handleLiveUpdate(data);
+            console.log("Received live update:", data);
         });
 
     }, (error) => {
@@ -310,7 +323,6 @@ function initMultiplayer() {
     }
 
     function handleLiveUpdate(data) {
-
         const answersEl = document.getElementById("answers");
         const feedbackEl = document.getElementById("feedback");
         Array.from(answersEl.children).forEach(btn => btn.disabled = true);
@@ -325,6 +337,8 @@ function initMultiplayer() {
         const isCorrect= Boolean(data.correct === true || data.correct === 'true')
         if (isCorrect) {
             feedbackEl.textContent = "Correct!";
+            const num = Math.floor(Math.random() * 5) + 1;
+            numSquares += num;
         } else {
             feedbackEl.textContent = "Wrong!";
         }
@@ -339,6 +353,8 @@ function initMultiplayer() {
                         Game Over!
                     </div>`;
             }
+            
+            redrawBoard();
         }, 2000);
     }
 

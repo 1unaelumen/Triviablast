@@ -151,6 +151,8 @@ public class GameController {
 
         User user = (User) session.getAttribute("u");
         game.getPlayers().add(user);
+        System.out.println("User " + user.getUsername() + " joined game " + code);
+        System.out.println("User " + user.getId() + " joined game " + code);
 
         session.setAttribute("gameCode", code);
         System.out.println("JOIN CALLED");
@@ -224,7 +226,7 @@ public class GameController {
         return "multi_game";
     }
 
-     @MessageMapping("/game/{gameCode}/answer")
+    @MessageMapping("/game/{gameCode}/answer")
     @Transactional
     public void checkMultiAnswer(@DestinationVariable String gameCode,
             @Payload AnswerReqDTO req, SimpMessageHeaderAccessor headerAccessor) {
@@ -251,7 +253,6 @@ public class GameController {
                 }
             }
         }
-
 
         // Broadcast result to all players in the game
         // This part would require a messaging template to send updates to clients
