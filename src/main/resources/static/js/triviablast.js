@@ -161,8 +161,8 @@ function initSingleplayer() {
     const nextBtn = document.getElementById("nextBtn");
 
     function updateStatus() {
-        const total = window.questions.length;
-        statusEl.textContent = `${currentIndex + 1}/${total} ${score} points`;
+        const total = window.questions ? window.questions.length : 0;
+        statusEl.textContent = `${currentIndex + 1}/${total}`;
     }
 
     function showQuestion(index) {
@@ -257,13 +257,14 @@ function initMultiplayer() {
 
     const statusEl = document.getElementById("gameStatus");
     const nextBtn = document.getElementById("nextBtn");
-
+    const socket = new WebSocket(`ws://${window.location.host}/ws`);
+    const stomp = Stomp.over(socket);
+    
     function updateStatus() {
         const total = window.questions.length;
         statusEl.textContent = `${currentIndex + 1}/${total}`;
     }
-    const socket = new SockJS('/ws');
-    const stomp = Stomp.over(socket);
+
 
     // 1. Define the headers for connection
     const connectHeaders = {
@@ -274,18 +275,17 @@ function initMultiplayer() {
     stomp.connect(connectHeaders, () => {
 
         console.log("Connected to multiplayer");
-        console.log(window.gameCode);
+        stomp.subscribe(`/topic/game/${window.gameCode}/start`, (msg) => {
+            window.questions = JSON.parse(msg.body);
+            currentIndex = 0;
+            showQuestion(currentIndex);
+        });
         stomp.subscribe(`/topic/game/${window.gameCode}`, (msg) => {
             const data = JSON.parse(msg.body);
             handleLiveUpdate(data);
-            console.log("Received live update:", data);
         });
 
-    }, (error) => {
-        // Also added an error callback here which might help us if it still fails
-        console.error("STOMP connection error: ", error);
     });
-
     function showQuestion(index) {
         const q = window.questions[index];
 
@@ -342,6 +342,7 @@ function initMultiplayer() {
         } else {
             feedbackEl.textContent = "Wrong!";
         }
+
         setTimeout(() => {
             currentIndex++;
 
@@ -353,14 +354,13 @@ function initMultiplayer() {
                         Game Over!
                     </div>`;
             }
-            
+
             redrawBoard();
-        }, 2000);
+        }, 2000);   
+
     }
 
-    showQuestion(currentIndex);
 }
-
 /* =========================
    HELPERS
 ========================= */

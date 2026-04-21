@@ -24,14 +24,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry
                 .addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
-                .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .withSockJS();
+                .addInterceptors(new HttpSessionHandshakeInterceptor());
         // allowedOrigins allows proxying; see https://stackoverflow.com/questions/33977803
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setApplicationDestinationPrefixes("/app"); // 🔴 FOARTE IMPORTANT
+        config.setApplicationDestinationPrefixes("/app"); 
         config.enableSimpleBroker("/topic", "/queue");
     }
 }

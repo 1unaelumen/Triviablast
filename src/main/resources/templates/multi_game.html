@@ -57,35 +57,12 @@
 
     </main>
 
-    <!-- Question Card -->
-       
-
-            <div id="answers" class="d-grid gap-2 mb-3">
-                <!-- Buttons inserted by JS -->
-            </div>
-
-            <div id="feedback" class="fw-bold text-center mb-3"></div>
-        </div>
-
-        <!-- Next question button -->
-        <div id="nextContainer" class="w-100 d-flex justify-content-center mb-3 px-2 px-md-0"
-            style="max-width: 700px;">
-            <button id="nextBtn" class="btn btn-success btn-lg px-4" disabled>
-                Next Question
-            </button>
-        </div>
-
-    </main>
-
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 
     <script th:inline="javascript">
         window.gameCode = sessionStorage.getItem("gameCode");
-        window.userId = `[[${session.u.id}]]`;
-        window.questions = JSON.parse(`[[${questions}]]`);
+        window.userId = `[[${session.u.id}]]`;  
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2/lib/stomp.min.js"></script>
 
     <script src="/js/triviaBlast.js"></script>
