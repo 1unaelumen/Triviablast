@@ -212,6 +212,7 @@ public class GameController {
 
             game.setQuestions(fullQuestions);
         }
+
         List<QuestionDataPublicDTO> publicQuestions = game.getQuestions()
                 .stream()
                 .map(q -> new QuestionDataPublicDTO(
@@ -226,6 +227,26 @@ public class GameController {
         return "multi_game";
     }
 
+    @MessageMapping("/game/{gameCode}/start")
+    public void sendQuestions(@DestinationVariable String gameCode) {
+    MultiplayerGameSession game = games.get(gameCode);
+
+    if (game == null) return;
+
+    List<QuestionDataPublicDTO> publicQuestions = game.getQuestions()
+        .stream()
+        .map(q -> new QuestionDataPublicDTO(
+            q.getId(),
+            q.getQuestion(),
+            q.getAnswers()
+        ))
+        .toList();
+
+    messagingTemplate.convertAndSend(
+        "/topic/game/" + gameCode + "/start",
+        publicQuestions
+    );
+}
     @MessageMapping("/game/{gameCode}/answer")
     @Transactional
     public void checkMultiAnswer(@DestinationVariable String gameCode,

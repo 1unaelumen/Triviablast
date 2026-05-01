@@ -62,6 +62,7 @@
     <script th:inline="javascript">
         window.gameCode = sessionStorage.getItem("gameCode");
         window.userId = `[[${session.u.id}]]`;  
+        window.questions=/*[[${questions}]]*/[];
     </script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2/lib/stomp.min.js"></script>
 

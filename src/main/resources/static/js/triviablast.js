@@ -259,7 +259,7 @@ function initMultiplayer() {
     const nextBtn = document.getElementById("nextBtn");
     const socket = new WebSocket(`ws://${window.location.host}/ws`);
     const stomp = Stomp.over(socket);
-    
+
     function updateStatus() {
         const total = window.questions.length;
         statusEl.textContent = `${currentIndex + 1}/${total}`;
@@ -280,6 +280,10 @@ function initMultiplayer() {
             currentIndex = 0;
             showQuestion(currentIndex);
         });
+
+        stomp.send(`/app/game/${window.gameCode}/start`,{
+            [config.csrf.header]: config.csrf.value
+        }, JSON.stringify({}));
         stomp.subscribe(`/topic/game/${window.gameCode}`, (msg) => {
             const data = JSON.parse(msg.body);
             handleLiveUpdate(data);
