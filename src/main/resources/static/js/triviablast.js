@@ -300,7 +300,7 @@ function initMultiplayer() {
 
         answersEl.innerHTML = "";
         feedbackEl.innerHTML = "";
-        nextBtn.disabled = true;
+        
 
         q.answers.forEach(answer => {
             const btn = document.createElement("button");
@@ -321,6 +321,7 @@ function initMultiplayer() {
             };
 
             answersEl.appendChild(btn);
+            console.log("question object:", q);
         });
 
         updateStatus();
