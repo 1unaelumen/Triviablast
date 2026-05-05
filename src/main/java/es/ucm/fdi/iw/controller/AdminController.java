@@ -1,4 +1,4 @@
-package es.ucm.fdi.iw.controller;
+/*package es.ucm.fdi.iw.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ import jakarta.transaction.Transactional;
  * Site administration.
  *
  * Access to this end-point is authenticated - see SecurityConfig
- */
+
 @Controller
 @RequestMapping("admin")
 public class AdminController {
@@ -86,9 +86,9 @@ public class AdminController {
     }
   }
 
-  /**
+
    * Returns JSON with all received messages
-   */
+
   @GetMapping(path = "all-messages", produces = "application/json")
   @Transactional // para no recibir resultados inconsistentes
   @ResponseBody // para indicar que no devuelve vista, sino un objeto (jsonizado)
@@ -151,3 +151,4 @@ public class AdminController {
     return "{\"admin\": \"populated\"}";
   }
 }
+*/

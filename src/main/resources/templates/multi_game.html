@@ -64,9 +64,8 @@
         window.userId = `[[${session.u.id}]]`;  
         window.questions=/*[[${questions}]]*/[];
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2/lib/stomp.min.js"></script>
-
-    <script src="/js/triviaBlast.js"></script>
+    <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
+    <script th:src="@{/js/triviaBlast.js}"></script>
 </body>
 
 </html>

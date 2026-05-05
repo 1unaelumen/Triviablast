@@ -39,12 +39,20 @@ import jakarta.transaction.Transactional;
 @RequestMapping("/game")
 public class GameController {
 
+
     @Autowired
     private EntityManager entityManager;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
     private static Map<String, MultiplayerGameSession> games = new HashMap<>();
+
+    @ModelAttribute
+    public void populateModel(HttpSession session, Model model) {
+        for (String name : new String[] { "u", "url", "ws", "topics" }) {
+            model.addAttribute(name, session.getAttribute(name));
+        }
+    }
 
     @PostMapping("/start_single_game")
     public String startGame(@ModelAttribute GameSetupDTO setup,
