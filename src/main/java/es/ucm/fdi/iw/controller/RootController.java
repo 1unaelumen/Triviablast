@@ -45,9 +45,9 @@ public class RootController {
         return "authors";
     }
 
-    @GetMapping("/multi_game_setup")
-    public String multi_game_setup(Model model) {
-        return "multi_game_setup";
+    @GetMapping("/game_setup")
+    public String game_setup(Model model) {
+        return "game_setup";
     }
 
     @GetMapping("/join_game")
@@ -55,9 +55,9 @@ public class RootController {
         return "join_game";
     }
 
-    @GetMapping("/multi_game")
-    public String multi_game(Model model) {
-        return "multi_game";
+    @GetMapping("/game")
+    public String game(Model model) {
+        return "game";
     }
 
     @GetMapping("/multi_victoryscr")
@@ -75,10 +75,6 @@ public class RootController {
         return "proposal";
     }
 
-    @GetMapping("/single_game_setup")
-    public String single_game_setup(Model model) {
-        return "single_game_setup";
-    }
 
     @PostMapping("/start_single_game")
     public String startSingleGame(@ModelAttribute GameSetupDTO setup, Model model) {

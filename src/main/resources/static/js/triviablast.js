@@ -147,7 +147,7 @@ function initTableToggleButtons() {
 /* 
    GAME TRIVIA SCRIPT
 */
-
+/*
 function initGame() {
 
     let currentIndex = 0;
@@ -242,12 +242,12 @@ function initGame() {
 
     showQuestion(currentIndex);
 };
-
+*/
 /* =========================
    MULTIPLAYER TRIVIA SCRIPT
 ========================= */
-/*
-function initMultiplayer() {
+
+function initGame() {
 
     let currentIndex = 0;
 
@@ -362,7 +362,7 @@ function initMultiplayer() {
     }
 
 }
-*/
+
 
 /* =========================
    HELPERS

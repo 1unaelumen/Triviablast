@@ -103,7 +103,7 @@ public class GameController {
 
         session.setAttribute("gameCode", code);
         System.out.println("JOIN CALLED");
-        return "game";
+        return "gamepage";
     }
 
     @PostMapping("/start_game")
@@ -148,281 +148,33 @@ public class GameController {
             i++;
         }
         game.setQuestions(fullQuestions);
-        session.setAttribute("questions", fullQuestions);
 
 
-        return "multi_game";
+        return "gamepage";
     }
 
     @PostMapping("/answer")
     @ResponseBody
     @Transactional
     public AnswerResDTO checkAnswer(@RequestBody AnswerReqDTO req, HttpSession session) {
-        List<QuestionDataPrivateDTO> questions = (List<QuestionDataPrivateDTO>) session.getAttribute("questions");
-
-        if (questions == null || req.getQuestionId() >= questions.size()) {
-            return new AnswerResDTO(false, null);
-        }
-
-        QuestionDataPrivateDTO q = questions.get(req.getQuestionId());
-        boolean isCorrect = q.getCorrectAnswer().equals(req.getAnswer());
-
-        if (isCorrect) {
-            User user = (User) session.getAttribute("u");
-            if (user != null) {
-                User managedUser = entityManager.find(User.class, user.getId());
-
-                if (managedUser != null) {
-                    managedUser.setTotalPoints(
-                            (managedUser.getTotalPoints() == null ? 0 : managedUser.getTotalPoints()) + 10);
-
-                    session.setAttribute("u", managedUser);
-                }
-            }
-        }
-
-        return new AnswerResDTO(isCorrect, q.getCorrectAnswer());
-    }
-
-} 
-/*
-
-@Controller
-@RequestMapping("/game")
-public class GameController {
-
-
-    @Autowired
-    private EntityManager entityManager;
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-
-    private static Map<String, MultiplayerGameSession> games = new HashMap<>();
-
-    @ModelAttribute
-    public void populateModel(HttpSession session, Model model) {
-        for (String name : new String[] { "u", "url", "ws", "topics" }) {
-            model.addAttribute(name, session.getAttribute(name));
-        }
-    }
-
-    @PostMapping("/start_single_game")
-    public String startGame(@ModelAttribute GameSetupDTO setup,
-            Model model,
-            HttpSession session) {
-
-        String url = "https://opentdb.com/api.php?amount=" + setup.getQuestionCount();
-        if (setup.getCategory() != null && !setup.getCategory().isEmpty()) {
-            url += "&category=" + setup.getCategory();
-        }
-        if (setup.getDifficulty() != null && !setup.getDifficulty().isEmpty()) {
-            url += "&difficulty=" + setup.getDifficulty().toLowerCase();
-        }
-
-        RestTemplate rest = new RestTemplate();
-        Map<String, Object> response = rest.getForObject(url, Map.class);
-
-        List<Map<String, Object>> results = (List<Map<String, Object>>) response.get("results");
-
-        List<QuestionDataPrivateDTO> fullQuestions = new ArrayList<>(); // full data stored in session
-        List<QuestionDataPublicDTO> publicQuestions = new ArrayList<>(); // safe version for frontend
-
-        int i = 0;
-        for (Map<String, Object> q : results) {
-            List<String> answers = new ArrayList<>();
-            String correct = (String) q.get("correct_answer");
-
-            answers.add(correct);
-            answers.addAll((List<String>) q.get("incorrect_answers"));
-            Collections.shuffle(answers);
-
-            fullQuestions.add(new QuestionDataPrivateDTO(i, (String) q.get("question"), answers, correct));
-            publicQuestions.add(new QuestionDataPublicDTO(i, (String) q.get("question"), answers));
-
-            i++;
-        }
-
-        session.setAttribute("questions", fullQuestions);
-        model.addAttribute("questions", publicQuestions);
-
-        return "single_game";
-    }
-
-    @PostMapping("/answer")
-    @ResponseBody
-    @Transactional
-    public AnswerResDTO checkAnswer(@RequestBody AnswerReqDTO req, HttpSession session) {
-        List<QuestionDataPrivateDTO> questions = (List<QuestionDataPrivateDTO>) session.getAttribute("questions");
-
-        if (questions == null || req.getQuestionId() >= questions.size()) {
-            return new AnswerResDTO(false, null);
-        }
-
-        QuestionDataPrivateDTO q = questions.get(req.getQuestionId());
-        boolean isCorrect = q.getCorrectAnswer().equals(req.getAnswer());
-
-        if (isCorrect) {
-            User user = (User) session.getAttribute("u");
-            if (user != null) {
-                User managedUser = entityManager.find(User.class, user.getId());
-
-                if (managedUser != null) {
-                    managedUser.setTotalPoints(
-                            (managedUser.getTotalPoints() == null ? 0 : managedUser.getTotalPoints()) + 10);
-
-                    session.setAttribute("u", managedUser);
-                }
-            }
-        }
-
-        return new AnswerResDTO(isCorrect, q.getCorrectAnswer());
-    }
-
-    // multiplayer game
-    @PostMapping("/create_multiplayer_game")
-    @ResponseBody
-    public String createGame(@ModelAttribute GameSetupDTO setup, HttpSession session) {
-
-        String code = UUID.randomUUID().toString().substring(0, 6);
-
-        MultiplayerGameSession game = new MultiplayerGameSession();
-        game.setCode(code);
-        game.setSetup(setup);
-
-        User user = (User) session.getAttribute("u");
-        game.getPlayers().add(user);
-
-        games.put(code, game);
-
-        session.setAttribute("gameCode", code);
-
-        return code;
-    }
-
-    @PostMapping("/join")
-    public String joinGame(@RequestParam String code, HttpSession session, Model model) {
-
-        MultiplayerGameSession game = games.get(code);
-
-        if (game == null) {
-            model.addAttribute("error", "Game not found");
-            return "join_game";
-        }
-
-        User user = (User) session.getAttribute("u");
-        game.getPlayers().add(user);
-        System.out.println("User " + user.getUsername() + " joined game " + code);
-        System.out.println("User " + user.getId() + " joined game " + code);
-
-        session.setAttribute("gameCode", code);
-        System.out.println("JOIN CALLED");
-        return "redirect:/game/multi_game";
-    }
-
-    @GetMapping("/multi_game")
-    public String startMultiGame(Model model, HttpSession session) {
-
         String code = (String) session.getAttribute("gameCode");
-        if (code == null) {
-            return "redirect:/";
-        }
-
         MultiplayerGameSession game = games.get(code);
-        if (game == null) {
-            return "redirect:/";
+
+        if (game == null || game.getQuestions() == null) {
+            return new AnswerResDTO(false, null);
         }
 
-        GameSetupDTO setup = game.getSetup();
-        if (game.getQuestions() == null || game.getQuestions().isEmpty()) {
+        List<QuestionDataPrivateDTO> questions = game.getQuestions();
 
-            String url = "https://opentdb.com/api.php?amount=" + setup.getQuestionCount();
-
-            if (setup.getCategory() != null && !setup.getCategory().isEmpty()) {
-                url += "&category=" + setup.getCategory();
-            }
-            if (setup.getDifficulty() != null && !setup.getDifficulty().isEmpty()) {
-                url += "&difficulty=" + setup.getDifficulty().toLowerCase();
-            }
-
-            RestTemplate rest = new RestTemplate();
-            Map<String, Object> response = (Map<String, Object>) rest.getForObject(url, Map.class);
-
-            List<Map<String, Object>> results = (List<Map<String, Object>>) response.get("results");
-
-            List<QuestionDataPrivateDTO> fullQuestions = new ArrayList<>();
-
-            int i = 0;
-            for (Map<String, Object> q : results) {
-                List<String> answers = new ArrayList<>();
-                String correct = (String) q.get("correct_answer");
-
-                answers.add(correct);
-                answers.addAll((List<String>) q.get("incorrect_answers"));
-                Collections.shuffle(answers);
-
-                fullQuestions.add(new QuestionDataPrivateDTO(
-                        i,
-                        (String) q.get("question"),
-                        answers,
-                        correct
-                ));
-
-                i++;
-            }
-
-            game.setQuestions(fullQuestions);
+        if (req.getQuestionId() >= questions.size()) {
+            return new AnswerResDTO(false, null);
         }
 
-        List<QuestionDataPublicDTO> publicQuestions = game.getQuestions()
-                .stream()
-                .map(q -> new QuestionDataPublicDTO(
-                q.getId(),
-                q.getQuestion(),
-                q.getAnswers()
-        ))
-                .toList();
-
-        model.addAttribute("questions", publicQuestions);
-
-        return "multi_game";
-    }
-
-    @MessageMapping("/game/{gameCode}/start")
-    public void sendQuestions(@DestinationVariable String gameCode) {
-    MultiplayerGameSession game = games.get(gameCode);
-
-    if (game == null) return;
-
-    List<QuestionDataPublicDTO> publicQuestions = game.getQuestions()
-        .stream()
-        .map(q -> new QuestionDataPublicDTO(
-            q.getId(),
-            q.getQuestion(),
-            q.getAnswers()
-        ))
-        .toList();
-
-    messagingTemplate.convertAndSend(
-        "/topic/game/" + gameCode + "/start",
-        publicQuestions
-    );
-}
-    @MessageMapping("/game/{gameCode}/answer")
-    @Transactional
-    public void checkMultiAnswer(@DestinationVariable String gameCode,
-            @Payload AnswerReqDTO req, SimpMessageHeaderAccessor headerAccessor) {
-        MultiplayerGameSession game = games.get(gameCode);
-
-        if (game == null || req.getQuestionId() >= game.getQuestions().size()) {
-            return;
-        }
-
-        QuestionDataPrivateDTO q = game.getQuestions().get(req.getQuestionId());
+        QuestionDataPrivateDTO q = questions.get(req.getQuestionId());
         boolean isCorrect = q.getCorrectAnswer().equals(req.getAnswer());
 
         if (isCorrect) {
-            Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
-            User user = sessionAttributes != null ? (User) sessionAttributes.get("u") : null;
+            User user = (User) session.getAttribute("u");
             if (user != null) {
                 User managedUser = entityManager.find(User.class, user.getId());
 
@@ -430,15 +182,13 @@ public class GameController {
                     managedUser.setTotalPoints(
                             (managedUser.getTotalPoints() == null ? 0 : managedUser.getTotalPoints()) + 10);
 
-                    sessionAttributes.put("u", managedUser);
+                    session.setAttribute("u", managedUser);
                 }
             }
         }
 
-        // Broadcast result to all players in the game
-        // This part would require a messaging template to send updates to clients
-        AnswerResDTO response = new AnswerResDTO(isCorrect, q.getCorrectAnswer());
-        messagingTemplate.convertAndSend("/topic/game/" + gameCode, response);
+        return new AnswerResDTO(isCorrect, q.getCorrectAnswer());
+        
     }
+
 } 
-    */

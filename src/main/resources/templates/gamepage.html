@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
-    <title>TriviaBlast Game</title>
+    <title>Triviablast Game</title>
     <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
         type="text/css" />
 </head>
@@ -64,7 +64,6 @@
     <script th:inline="javascript">
         window.gameCode = sessionStorage.getItem("gameCode");
         window.userId = `[[${session.u.id}]]`;  
-        window.questions = /*[[${session.questions}]]*/[];
     </script>
     <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
     <script th:src="@{/js/triviaBlast.js}"></script>

@@ -70,8 +70,8 @@ public class SecurityConfig {
 								"/index",
 								"/join_game",
 								"/login",
-								"/multi_game_setup",
-								"/multi_game",
+								"/game_setup",
+								"/game",
 								"/multi_victoryscr")
 						.permitAll()
 

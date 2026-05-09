@@ -2,6 +2,10 @@
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta name = "_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!-- lines 5,6 are stricly for error 403 Forbidden access,
+      because the server doesn't allow me-->
     <th:block th:replace="~{fragments/head :: header}" />
     <title>Game Setup</title>
     <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
@@ -17,9 +21,11 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
                     <h1 class="mb-5 text-center">Game Setup</h1>
 
-                    <form th:action="@{/game/create_game}" method="post">
+                    <form id="createGameForm">
+                        <p id="gameCode" class="text-center mt-3"></p>
 
                         <!-- Category-->
+
                         <div class="mb-5 text-start">
                             <label class="form-label fs-5">Category:</label>
                             <select class="form-select" name="category">
@@ -85,7 +91,12 @@
     </main>
 
     <th:block th:replace="~{fragments/footer.html :: footer}" />
-
+    <script th:inline="javascript">
+        window.gameCode = sessionStorage.getItem("gameCode");
+        window.userId = `[[${session.u.id}]]`;  
+    </script>
+    <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
+    <script th:src="@{/js/triviaBlast.js}"></script>
 </body>
 
 </html>
