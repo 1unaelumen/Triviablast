@@ -43,7 +43,7 @@
     </main>
 
     <th:block th:replace="~{fragments/footer :: footer}"></th:block>
-
+    <script th:src="@{/js/triviablast.js}"></script>
     <script th:inline="javascript">
         window.questions = /*[[${questions}]]*/ [];
     </script>

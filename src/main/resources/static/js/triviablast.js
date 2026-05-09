@@ -2,12 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuthToggle();
     initBoard();
     initTableToggleButtons();
-
-    if (window.gameCode) {
-    initMultiplayer();
-    } else {
-    initSingleplayer();
-    }
+    initGame();
+    
 
 });
 
@@ -148,11 +144,11 @@ function initTableToggleButtons() {
     });
 }
 
-/* =========================
-   SINGLEPLAYER TRIVIA SCRIPT
-========================= */
+/* 
+   GAME TRIVIA SCRIPT
+*/
 
-function initSingleplayer() {
+function initGame() {
 
     let currentIndex = 0;
     let score = 0;
@@ -250,7 +246,7 @@ function initSingleplayer() {
 /* =========================
    MULTIPLAYER TRIVIA SCRIPT
 ========================= */
-
+/*
 function initMultiplayer() {
 
     let currentIndex = 0;
@@ -366,6 +362,8 @@ function initMultiplayer() {
     }
 
 }
+*/
+
 /* =========================
    HELPERS
 ========================= */

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Lobby</title>
+</head>
+
+<body>
+
+<h1>Lobby</h1>
+
+<p>Game code: <b th:text="${code}"></b></p>
+
+<h3>Players:</h3>
+
+<ul>
+    <li th:each="p : ${players}"
+        th:text="${p.username}">
+    </li>
+</ul>
+
+<form th:action="@{/game/start_game}" method="post">
+    <button type="submit">Start Game</button>
+</form>
+
+</body>
+</html>
