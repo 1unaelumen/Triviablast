@@ -446,7 +446,7 @@ public class UserController {
 
     return "redirect:/";
   }
-/* 
+ 
   @GetMapping("/scoreboard")
   public String scoreboard(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -469,5 +469,4 @@ public class UserController {
     return "scoreboard";
  
   }
-*/ 
 }
