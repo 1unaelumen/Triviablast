@@ -148,6 +148,7 @@ public class GameController {
             i++;
         }
         game.setQuestions(fullQuestions);
+        model.addAttribute("questions", publicQuestions);
 
 
         return "gamepage";
@@ -187,7 +188,13 @@ public class GameController {
             }
         }
 
-        return new AnswerResDTO(isCorrect, q.getCorrectAnswer());
+        AnswerResDTO response = new AnswerResDTO(isCorrect, q.getCorrectAnswer());
+        messagingTemplate.convertAndSend(
+            "/topic/game/" + code,
+            response
+        );
+
+        return response;
         
     }
 

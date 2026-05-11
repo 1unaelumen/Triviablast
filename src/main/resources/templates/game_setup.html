@@ -21,7 +21,13 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
                     <h1 class="mb-5 text-center">Game Setup</h1>
 
-                    <form id="createGameForm">
+                    <form id="createGameForm"
+                    th:action="@{/game/create_game}"
+                    method="post">
+
+                    <input type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}">
                         <p id="gameCode" class="text-center mt-3"></p>
 
                         <!-- Category-->
@@ -96,7 +102,7 @@
         window.userId = `[[${session.u.id}]]`;  
     </script>
     <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
-    <script th:src="@{/js/triviaBlast.js}"></script>
+    <script th:src="@{/js/triviablast.js}"></script>
 </body>
 
 </html>

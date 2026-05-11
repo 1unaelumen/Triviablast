@@ -215,9 +215,15 @@
 
             const modalEl = document.getElementById('miModal');
 
-            modalEl.addEventListener('hidden.bs.modal', function () {
-                const alerts = modalEl.querySelectorAll('.alert');
-                alerts.forEach(alert => alert.remove());
+            modalEl.addEventListener('shown.bs.modal', function () {
+                const openTab = document.body.dataset.openTab;
+
+                if (!openTab) return;
+
+                const tabTrigger = document.querySelector('[data-bs-target="#' + openTab + '"]');
+                if (tabTrigger) {
+                    new bootstrap.Tab(tabTrigger).show();
+                }
             });
         });
     </script>

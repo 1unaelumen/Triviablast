@@ -147,7 +147,7 @@ function initTableToggleButtons() {
 /* 
    GAME TRIVIA SCRIPT
 */
-/*
+
 function initGame() {
 
     let currentIndex = 0;
@@ -209,6 +209,8 @@ function initGame() {
                         clickedBtn.classList.replace("btn-outline-primary", "btn-success");
                         feedbackEl.textContent = "Correct!";
                         score += 10;
+                        numSquares += 1;
+                        if (window.redrawBoard) window.redrawBoard();
                     } else {
                         clickedBtn.classList.replace("btn-outline-primary", "btn-danger");
                         feedbackEl.textContent = "Incorrect!";
@@ -242,126 +244,6 @@ function initGame() {
 
     showQuestion(currentIndex);
 };
-*/
-/* =========================
-   MULTIPLAYER TRIVIA SCRIPT
-========================= */
-
-function initGame() {
-
-    let currentIndex = 0;
-
-    const statusEl = document.getElementById("gameStatus");
-    const nextBtn = document.getElementById("nextBtn");
-    const socket = new WebSocket(`ws://${window.location.host}/ws`);
-    const stomp = Stomp.over(socket);
-
-    function updateStatus() {
-        const total = window.questions.length;
-        statusEl.textContent = `${currentIndex + 1}/${total}`;
-    }
-
-
-    // 1. Define the headers for connection
-    const connectHeaders = {
-        [config.csrf.header]: config.csrf.value
-    };
-
-    // 2. Pass them as the first argument to stomp.connect
-    stomp.connect(connectHeaders, () => {
-
-        console.log("Connected to multiplayer");
-        stomp.subscribe(`/topic/game/${window.gameCode}/start`, (msg) => {
-            window.questions = JSON.parse(msg.body);
-            currentIndex = 0;
-            showQuestion(currentIndex);
-        });
-
-        stomp.send(`/app/game/${window.gameCode}/start`,{
-            [config.csrf.header]: config.csrf.value
-        }, JSON.stringify({}));
-        stomp.subscribe(`/topic/game/${window.gameCode}`, (msg) => {
-            const data = JSON.parse(msg.body);
-            handleLiveUpdate(data);
-        });
-
-    });
-    function showQuestion(index) {
-        const q = window.questions[index];
-
-        document.getElementById("question").innerHTML = q.question;
-
-        const answersEl = document.getElementById("answers");
-        const feedbackEl = document.getElementById("feedback");
-
-        answersEl.innerHTML = "";
-        feedbackEl.innerHTML = "";
-        
-
-        q.answers.forEach(answer => {
-            const btn = document.createElement("button");
-            btn.className = "btn btn-outline-primary";
-            btn.innerHTML = answer;
-
-            btn.onclick = () => {
-                // Pass the CSRF token in the second argument (the STOMP headers)
-                const headers = {
-                    [config.csrf.header]: config.csrf.value
-                };
-
-                stomp.send(`/app/game/${window.gameCode}/answer`, headers, JSON.stringify({
-                    questionId: q.id,
-                    answer: answer,
-                    userId: window.userId
-                }));
-            };
-
-            answersEl.appendChild(btn);
-            console.log("question object:", q);
-        });
-
-        updateStatus();
-    }
-
-    function handleLiveUpdate(data) {
-        const answersEl = document.getElementById("answers");
-        const feedbackEl = document.getElementById("feedback");
-        Array.from(answersEl.children).forEach(btn => btn.disabled = true);
-
-        const correctAnswer = decodeHtml(data.correctAnswer).trim().toLowerCase();
-        Array.from(answersEl.children).forEach(btn => {
-            if (btn.textContent.trim().toLowerCase() === correctAnswer) {
-                btn.classList.replace("btn-outline-primary", "btn-success");
-            }
-        });
-
-        const isCorrect= Boolean(data.correct === true || data.correct === 'true')
-        if (isCorrect) {
-            feedbackEl.textContent = "Correct!";
-            const num = Math.floor(Math.random() * 5) + 1;
-            numSquares += num;
-        } else {
-            feedbackEl.textContent = "Wrong!";
-        }
-
-        setTimeout(() => {
-            currentIndex++;
-
-            if (currentIndex < window.questions.length) {
-                showQuestion(currentIndex);
-            } else {
-                document.getElementById("gameCard").innerHTML =
-                    `<div class="text-center fs-4 fw-bold">
-                        Game Over!
-                    </div>`;
-            }
-
-            redrawBoard();
-        }, 2000);   
-
-    }
-
-}
 
 
 /* =========================

@@ -63,10 +63,12 @@
 
     <script th:inline="javascript">
         window.gameCode = sessionStorage.getItem("gameCode");
-        window.userId = `[[${session.u.id}]]`;  
+        //window.userId = `[[${session.u.id}]]`;  
+        window.questions = /*[[${questions}]]*/ [];
+        console.log("QUESTIONS:", window.questions);
     </script>
     <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
-    <script th:src="@{/js/triviaBlast.js}"></script>
+    <script th:src="@{/js/triviablast.js}"></script>
 </body>
 
 </html>
