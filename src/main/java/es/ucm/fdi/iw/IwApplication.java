@@ -32,14 +32,14 @@ public class IwApplication {
                     User admin = new User();
                     admin.setUsername("a");
                     admin.setPassword(passwordEncoder.encode("aa"));
-                    admin.setEmail("admin@example.com");
+                    admin.setEmail("admin1@example.com");
                     admin.setRoles("ADMIN,USER");
                     admin.setEnabled(true);
                     entityManager.persist(admin);
 
                     User user = new User();
                     user.setUsername("b");
-                    user.setPassword(passwordEncoder.encode("aa"));
+                    user.setPassword(passwordEncoder.encode("bb"));
                     user.setEmail("user@example.com");
                     user.setRoles("USER");
                     user.setEnabled(true);
