@@ -74,4 +74,8 @@ public class MultiplayerGameSession {
             finished = true;
         }
     }
+    public void addPlayer(User u) {
+        players.add(u);
+        scores.put(u.getId(), 0);
+    }
 }

@@ -2,10 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuthToggle();
     initBoard();
     initTableToggleButtons();
-    initGame();
-    
 
 });
+
+
+let socket;
+let stompClient;
+
+function connectGame(code) {
+
+    socket = new WebSocket("ws://localhost:8081/ws");
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function(frame) {
+
+        console.log("CONNECTED", frame);
+
+        stompClient.subscribe("/topic/game/" + code, function(msg) {
+
+            const data = JSON.parse(msg.body);
+
+            sessionStorage.setItem(
+                "questions",
+                JSON.stringify(data.questions)
+            );
+
+            window.location.href = "/game/play?code=" + code;
+        });
+
+    }, function(error) {
+        console.error("STOMP ERROR:", error);
+    });
+}
 
 let numSquares = 0;
 

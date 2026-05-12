@@ -99,8 +99,7 @@
     <th:block th:replace="~{fragments/footer.html :: footer}" />
     <script th:inline="javascript">
         window.gameCode = sessionStorage.getItem("gameCode");
-        window.userId = `[[${session.u.id}]]`;  
-    </script>
+    </script>  
     <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
     <script th:src="@{/js/triviablast.js}"></script>
 </body>

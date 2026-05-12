@@ -29,6 +29,7 @@ import es.ucm.fdi.iw.controller.DTOs.AnswerResDTO;
 import es.ucm.fdi.iw.controller.DTOs.GameSetupDTO;
 import es.ucm.fdi.iw.controller.DTOs.QuestionDataPrivateDTO;
 import es.ucm.fdi.iw.controller.DTOs.QuestionDataPublicDTO;
+import es.ucm.fdi.iw.controller.DTOs.StartGameDTO;
 import es.ucm.fdi.iw.model.MultiplayerGameSession;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
@@ -103,57 +104,71 @@ public class GameController {
 
         session.setAttribute("gameCode", code);
         System.out.println("JOIN CALLED");
-        return "gamepage";
+        return "redirect:/game/lobby?code=" + code;
     }
-
     @PostMapping("/start_game")
-    public String startGame(Model model,HttpSession session) {
-        String code = (String) session.getAttribute("gameCode");
-        MultiplayerGameSession game = games.get(code);
+    @ResponseBody
+    public Map<String, Object> startGame(HttpSession session) {
 
-        if (game == null) {
-            return "redirect:/";
-        }
+    String code = (String) session.getAttribute("gameCode");
+    MultiplayerGameSession game = games.get(code);
 
-        GameSetupDTO setup = game.getSetup();
-
-        String url = "https://opentdb.com/api.php?amount=" + setup.getQuestionCount();
-        if (setup.getCategory() != null && !setup.getCategory().isEmpty()) {
-            url += "&category=" + setup.getCategory();
-        }
-        if (setup.getDifficulty() != null && !setup.getDifficulty().isEmpty()) {
-            url += "&difficulty=" + setup.getDifficulty().toLowerCase();
-        }
-
-        RestTemplate rest = new RestTemplate();
-        Map<String, Object> response = rest.getForObject(url, Map.class);
-
-        List<Map<String, Object>> results = (List<Map<String, Object>>) response.get("results");
-
-        List<QuestionDataPrivateDTO> fullQuestions = new ArrayList<>(); // full data stored in session
-        List<QuestionDataPublicDTO> publicQuestions = new ArrayList<>(); // safe version for frontend
-
-        int i = 0;
-        for (Map<String, Object> q : results) {
-            List<String> answers = new ArrayList<>();
-            String correct = (String) q.get("correct_answer");
-
-            answers.add(correct);
-            answers.addAll((List<String>) q.get("incorrect_answers"));
-            Collections.shuffle(answers);
-
-            fullQuestions.add(new QuestionDataPrivateDTO(i, (String) q.get("question"), answers, correct));
-            publicQuestions.add(new QuestionDataPublicDTO(i, (String) q.get("question"), answers));
-
-            i++;
-        }
-        game.setQuestions(fullQuestions);
-        model.addAttribute("questions", publicQuestions);
-
-
-        return "gamepage";
+    if (game == null) {
+        return Map.of("error", "game_not_found");
     }
 
+    GameSetupDTO setup = game.getSetup();
+
+    String url = "https://opentdb.com/api.php?amount=" + setup.getQuestionCount();
+    if (setup.getCategory() != null && !setup.getCategory().isEmpty()) {
+        url += "&category=" + setup.getCategory();
+    }
+    if (setup.getDifficulty() != null && !setup.getDifficulty().isEmpty()) {
+        url += "&difficulty=" + setup.getDifficulty().toLowerCase();
+    }
+
+    RestTemplate rest = new RestTemplate();
+    Map<String, Object> response = rest.getForObject(url, Map.class);
+
+    List<Map<String, Object>> results = (List<Map<String, Object>>) response.get("results");
+
+    List<QuestionDataPrivateDTO> fullQuestions = new ArrayList<>();
+    List<QuestionDataPublicDTO> publicQuestions = new ArrayList<>();
+
+    int i = 0;
+    for (Map<String, Object> q : results) {
+
+        List<String> answers = new ArrayList<>();
+        String correct = (String) q.get("correct_answer");
+
+        answers.add(correct);
+        answers.addAll((List<String>) q.get("incorrect_answers"));
+        Collections.shuffle(answers);
+
+        fullQuestions.add(new QuestionDataPrivateDTO(i, (String) q.get("question"), answers, correct));
+        publicQuestions.add(new QuestionDataPublicDTO(i, (String) q.get("question"), answers));
+
+        i++;
+    }
+
+    game.setQuestions(fullQuestions);
+
+    messagingTemplate.convertAndSend(
+        "/topic/game/" + code,
+        new StartGameDTO(publicQuestions)
+    );
+
+    return Map.of("status", "started");
+}
+
+    @GetMapping("/gamepage")
+    public String gamePage(@RequestParam(required = false) String code,Model model) {
+
+        model.addAttribute("code", code);
+
+        return "triviablast";
+    }
+    
     @PostMapping("/answer")
     @ResponseBody
     @Transactional

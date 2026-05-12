@@ -56,7 +56,7 @@ public class SecurityConfig {
 
 		http
 				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/api/**"))
+						.ignoringRequestMatchers("/api/**", "/ws/**"))
 				.authorizeHttpRequests(authorize -> authorize
 
 						// recursos públicos
@@ -70,13 +70,15 @@ public class SecurityConfig {
 								"/index",
 								"/join_game",
 								"/login",
+								"/lobby",
 								"/game_setup",
-								"/game",
+								"/gamepage",
+								"/ws/**",
 								"/multi_victoryscr")
 						.permitAll()
 
 						.requestMatchers("/api/**").permitAll()
-
+						.requestMatchers("/ws/**").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.requestMatchers("/user/**").hasRole("USER")
 

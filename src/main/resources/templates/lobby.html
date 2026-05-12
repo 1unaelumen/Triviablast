@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>Lobby</title>
 </head>
 
@@ -19,16 +21,38 @@
     </li>
 </ul>
 
-<form th:action="@{/game/start_game}" method="post">
+<button type="button" id="startGameBtn">
+    Start Game
+</button>
 
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}">
-
-    <button type="submit">Start Game</button>
-</form>
 <script th:inline="javascript">
-    sessionStorage.setItem("gameCode", "[[${code}]]");
+    window.gameCode = /*[[${code}]]*/ null;
+    sessionStorage.setItem("gameCode", window.gameCode);
+</script>
+
+
+<script th:src="@{/js/stomp.js}"></script>
+<script th:src="@{/js/triviablast.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        connectGame(window.gameCode);
+
+        const token = document.querySelector('meta[name="_csrf"]').content;
+        const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+        document.getElementById("startGameBtn")
+            .addEventListener("click", () => {
+
+            fetch("/game/start_game", {
+                method: "POST",
+                headers: {
+                    [header]: token
+                }
+            });
+        });
+    });
 </script>
 
 </body>

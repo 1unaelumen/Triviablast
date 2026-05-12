@@ -1,8 +1,11 @@
 package es.ucm.fdi.iw.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -41,6 +44,7 @@ public class Game {
 
     private String gameState;
 
+    private int currentQuestionIndex = 0;
     @ManyToOne
     @JoinColumn(name = "host_id", nullable = false)
     private User host;
@@ -50,6 +54,12 @@ public class Game {
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true) //if game is deleted then messages are deleted too
     private List<Message> messages = new ArrayList<>();
+
+            @ElementCollection
+    private Map<Long, Integer> scores = new HashMap<>();
+
+    @Transient
+    private Set<Long> answeredThisQuestion = new HashSet<>();
 
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 6;
