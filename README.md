@@ -12,7 +12,7 @@ TriviaBlast es un juego interactivo que permite a los usuarios practicar y ganar
 
 | Rol           | Permisos                                                                 |
 |---------------|--------------------------------------------------------------------------|
-| **Jugador**   | Gestionar cuenta, jugar partidas individuales/multijugador, ver leaderboard. |
+| **Jugador**   | Gestionar cuenta, jugar partidas individuales, ver leaderboard. |
 | **Administrador** | Ocultar, editar, borrar o restaurar visibilidad de usuarios. |
 
 #### Partida individual
@@ -58,3 +58,22 @@ TriviaBlast es un juego interactivo que permite a los usuarios practicar y ganar
 
 - Actualización de pantallas mediante AJAX (en scoreboard)
 - Actualmente, la aplicación no dispone de pruebas, aunque se realizarán.
+
+### Lista de usuarios en la BD
+
+USERNAME : infinite.alex5
+PASSWORD : 1234
+
+USERNAME : ana
+PASSWORD : 234
+
+USERNAME : juan
+PASSWORD : 123
+
+USERNAME : maria1
+PASSWORD : 12
+
+(admin) USERNAME : a   
+	PASSWORD : aa
+(admin) USERNAME : b   
+	PASSWORD : bb
