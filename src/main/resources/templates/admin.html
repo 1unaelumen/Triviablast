@@ -44,7 +44,7 @@
                         <td th:text="${user.visibilityState}">PUBLIC</td>
 
                         <td>
-                            <form th:action="@{/admin/toggle/{id}(id=${user.id})}" method="post">
+                            <form th:action="@{/admin/toggleView/{id}(id=${user.id})}" method="post">
                                 <button th:if="${user.enabled}" type="submit"
                                     class="toggle btn btn-danger">Deshabilitar</button>
                                 <button th:unless="${user.enabled}" type="submit"
@@ -74,7 +74,7 @@
                 e.preventDefault();
                 const form = e.target.parentElement;
                 go(form.action, 'POST').then((d) => {
-                    if (d.enabled) {
+                    if (d.visibilityState) {
                         e.target.classList.remove('btn-primary');
                         e.target.classList.add('btn-danger');
                         e.target.textContent = 'Deshabilitar';
