@@ -1,6 +1,6 @@
 # TriviaBlast
 
-**Juego de preguntas y respuestas en línea** para jugar de forma individual o en salas multijugador (hasta 8 jugadores).
+**Juego de preguntas y respuestas en línea** para jugar de forma individual.
 
 ## Propuesta
 
@@ -15,19 +15,11 @@ TriviaBlast es un juego interactivo que permite a los usuarios practicar y ganar
 | **Jugador**   | Gestionar cuenta, jugar partidas individuales/multijugador, ver leaderboard. |
 | **Administrador** | Ocultar, editar, borrar o restaurar visibilidad de usuarios. |
 
-### Modalidades de juego
-
 #### Partida individual
 
 - Configuración personalizada: número de preguntas, categoría y dificultad.
 - Límite de tiempo por pregunta.
 - Puntuación basada en dificultad y rapidez al responder.
-
-#### Partida multijugador
-
-- Sala privada con código de invitación.
-- Tablero por turnos, con categorías por colores.
-- Gana el primer jugador que complete correctamente todas las categorías.
 
 ### Sistema de puntos y leaderboard
 
@@ -58,15 +50,11 @@ TriviaBlast es un juego interactivo que permite a los usuarios practicar y ganar
 
 ### En progreso
 
-- **Partida multijugador**: Solo está implementada la vista estática. Para configurar la partida podemos reciclar la funcionalidad otorgada por la configuración de la partida individual, sin embargo faltaría implementar:
-  1. La capacidad de conectar jugadores al juego (generación y funcionalidad de código para sala activa)
-  2. La lógica del juego
-  3. La capacidad de enviar mensajes a la partida o a los admins
-  4. La recepción de puntos al finalizar la partida
+- **Diseño visual**: Actualmente el diseño visual de la aplicación sigue en progreso. Aunque la interfaz ya es funcional, continuamos trabajando en mejorar la estética, la organización de los elementos y la experiencia general del usuario para futuras versiones.
+
 - **Barra de navegación**: Actualmente responde a una estructura deseada para el debugging de la aplicación y la visualización de las vistas que siguen siendo estáticas. Sin embargo, en el futuro tendrá una estructura más común para una aplicación online práctica (casa, perfil/login), mientras que las vistas referidas al juego serán accesibles desde los botones correspondientes en la "casa".
 
 ### Otras cosas
 
-- Actualización de pantallas mediante AJAX (en scoreboard y la partida multijugador)
-- El despliegue de la aplicación en máquina virtual funciona correctamente.
+- Actualización de pantallas mediante AJAX (en scoreboard)
 - Actualmente, la aplicación no dispone de pruebas, aunque se realizarán.
