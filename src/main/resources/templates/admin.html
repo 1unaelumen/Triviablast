@@ -4,21 +4,46 @@
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>IW: Admin</title>
-    <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
-        type="text/css" />
+
+    <link rel="stylesheet"
+          th:href="@{/css/simple-datatables-10.css}"
+          href="/css/simple-datatables-10.css"
+          type="text/css" />
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin.css}"
+          href="/css/admin.css">
 </head>
 
 <body class="d-flex flex-column h-100">
-    <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0">
-        <div class="container">
-            <h1 class="mt-5">Administración</h1>
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+
+<main class="admin-page flex-grow-1">
+
+    <div class="container">
+
+        <div class="admin-header">
+            <div>
+                <div class="admin-badge">ADMIN PANEL</div>
+                <h1 class="admin-title">Administración</h1>
+                <p class="admin-subtitle">
+                    Manage users, visibility and system messages.
+                </p>
+            </div>
         </div>
-        <div class="container">
-            <h1 class="mt-5">Usuarios</h1>
-            <table>
-                <thead>
+
+        <div class="admin-card mb-4">
+
+            <div class="admin-section-header">
+                <h2>Usuarios</h2>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table admin-table align-middle">
+
+                    <thead>
                     <tr>
                         <th>Id</th>
                         <th>Username</th>
@@ -28,95 +53,150 @@
                         <th>Visibilidad</th>
                         <th>Acciones</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+
+                    <tbody>
                     <tr th:each="user : ${users}">
+
                         <td th:text="${user.id}">1</td>
 
-                        <td th:text="${user.username}">paco</td>
+                        <td class="fw-bold" th:text="${user.username}">
+                            paco
+                        </td>
 
-                        <td th:text="${user.email}">email@test.com</td>
-
-                        <td th:text="${user.roles}">USER</td>
-
-                        <td th:text="${user.totalPoints}">0</td>
-
-                        <td th:text="${user.visibilityState}">PUBLIC</td>
+                        <td th:text="${user.email}">
+                            email@test.com
+                        </td>
 
                         <td>
-                            <form th:action="@{/admin/toggleView/{id}(id=${user.id})}" method="post">
-                                <button th:if="${user.enabled}" type="submit"
-                                    class="toggle btn btn-danger">Deshabilitar</button>
-                                <button th:unless="${user.enabled}" type="submit"
-                                    class="toggle btn btn-primary">Habilitar</button>
+                            <span class="admin-role-pill"
+                                  th:text="${user.roles}">
+                                USER
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="admin-points-pill"
+                                  th:text="${user.totalPoints}">
+                                0
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="admin-visibility-pill"
+                                  th:text="${user.visibilityState}">
+                                PUBLIC
+                            </span>
+                        </td>
+
+                        <td>
+                            <form th:action="@{/admin/toggleView/{id}(id=${user.id})}"
+                                  method="post">
+
+                                <button th:if="${user.enabled}"
+                                        type="submit"
+                                        class="toggle admin-action-btn admin-danger-btn">
+                                    Deshabilitar
+                                </button>
+
+                                <button th:unless="${user.enabled}"
+                                        type="submit"
+                                        class="toggle admin-action-btn admin-primary-btn">
+                                    Habilitar
+                                </button>
+
                             </form>
                         </td>
+
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
 
-        <div class="container">
+                </table>
 
-            <h2>Últimos 5 mensajes del sistema</h2>
-            <table id="messages"></table> <!-- will be filled with JSON data-->
-            <button id="refresh" class="btn btn-primary">Actualizar vía AJAX</button>
+            </div>
 
         </div>
 
-    </main>
+        <div class="admin-card">
 
-    <th:block th:replace="~{fragments/footer.html :: footer}" />
-    <script>
-        const toggles = document.querySelectorAll('.toggle');
-        toggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                const form = e.target.parentElement;
-                go(form.action, 'POST').then((d) => {
-                    if (d.visibilityState) {
-                        e.target.classList.remove('btn-primary');
-                        e.target.classList.add('btn-danger');
-                        e.target.textContent = 'Deshabilitar';
-                    } else {
-                        e.target.classList.remove('btn-danger');
-                        e.target.classList.add('btn-primary');
-                        e.target.textContent = 'Habilitar';
-                    }
-                    console.log(d);
-                });
+            <div class="admin-section-header">
+                <h2>Últimos 5 mensajes del sistema</h2>
+
+                <button id="refresh"
+                        class="admin-refresh-btn">
+                    Actualizar vía AJAX
+                </button>
+            </div>
+
+            <div class="admin-messages-box">
+                <table id="messages"></table>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<th:block th:replace="~{fragments/footer.html :: footer}" />
+
+<script>
+    const toggles = document.querySelectorAll('.toggle');
+
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const form = e.target.parentElement;
+
+            go(form.action, 'POST').then((d) => {
+                if (d.visibilityState) {
+                    e.target.classList.remove('admin-primary-btn');
+                    e.target.classList.add('admin-danger-btn');
+                    e.target.textContent = 'Deshabilitar';
+                } else {
+                    e.target.classList.remove('admin-danger-btn');
+                    e.target.classList.add('admin-primary-btn');
+                    e.target.textContent = 'Habilitar';
+                }
+
+                console.log(d);
             });
         });
+    });
+</script>
 
+<script type="module">
+    import { DataTable } from "../js/simple-datatables-10.js"
 
-    </script>
+    let dt = null;
 
-    <script type="module">
-        import { DataTable } from "../js/simple-datatables-10.js"
-        let dt = null;
-        function refreshMessages() {
-            go('/admin/all-messages', 'GET').then((d) => {
-                if (dt) {
-                    dt.destroy();
-                    document.querySelector("#messages").innerHTML = '';
-                }
-                dt = new DataTable('#messages', {
-                    data: {
-                        headings: ['from', 'to', 'text'],
-                        data: d
-                    },
-                    searchable: true,
-                    paging: false
-                });
-                dt.on("datatable.selectrow", (rowIndex, event, focused) => {
-                    event.preventDefault();
-                    console.log("click en fila: ", dataTable.data[rowIndex]);
-                });
+    function refreshMessages() {
+        go('/admin/all-messages', 'GET').then((d) => {
+            if (dt) {
+                dt.destroy();
+                document.querySelector("#messages").innerHTML = '';
+            }
+
+            dt = new DataTable('#messages', {
+                data: {
+                    headings: ['from', 'to', 'text'],
+                    data: d
+                },
+                searchable: true,
+                paging: false
             });
-        }
-        document.getElementById('refresh').addEventListener('click', refreshMessages);
-        refreshMessages();
-    </script>
-</body>
 
+            dt.on("datatable.selectrow", (rowIndex, event, focused) => {
+                event.preventDefault();
+                console.log("click en fila: ", dataTable.data[rowIndex]);
+            });
+        });
+    }
+
+    document.getElementById('refresh').addEventListener('click', refreshMessages);
+    refreshMessages();
+</script>
+
+</body>
 </html>

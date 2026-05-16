@@ -1,35 +1,72 @@
 <!DOCTYPE html>
-<html lang="es" class="h-100" xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html lang="es" class="h-100"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>TriviaBlast</title>
-    <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
-        type="text/css" />
+
+    <link rel="stylesheet"
+          th:href="@{/css/simple-datatables-10.css}"
+          href="/css/simple-datatables-10.css"
+          type="text/css" />
+
+    <link rel="stylesheet"
+          th:href="@{/css/home.css}"
+          href="/css/home.css">
 </head>
 
 <body class="d-flex flex-column h-100">
 
-    <header th:replace="~{fragments/nav.html :: nav}"></header>
+<header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-grow-1 d-flex align-items-center justify-content-center">
-        <div class="text-center">
+<main class="home-page flex-grow-1">
 
-            <h1 class="mb-5">TriviaBlast</h1>
+    <div class="home-background-shape shape-1"></div>
+    <div class="home-background-shape shape-2"></div>
+    <div class="home-background-shape shape-3"></div>
 
-            <div>
-                <a th:href="@{/single_game_setup}" class="btn btn-primary btn-lg px-5 py-4 fs-4" sec:authorize="isAuthenticated()">
+    <section class="container home-section">
+
+        <div class="home-card text-center">
+
+            <div class="home-badge">
+                ONLINE TRIVIA GAME
+            </div>
+
+            <h1 class="home-title">
+                Trivia<span>Blast</span>
+            </h1>
+
+            <p class="home-subtitle">
+                Test your knowledge, answer exciting questions,
+                and challenge yourself in a colorful trivia experience.
+            </p>
+
+            <div class="home-buttons">
+
+                <a th:href="@{/single_game_setup}"
+                   class="home-play-btn"
+                   sec:authorize="isAuthenticated()">
                     Play singleplayer game
                 </a>
+
+                <a th:href="@{/login}"
+                   class="home-play-btn"
+                   sec:authorize="!isAuthenticated()">
+                    Sign in to play
+                </a>
+
             </div>
 
         </div>
-    </main>
 
-    <th:block th:replace="~{fragments/footer.html :: footer}" />
+    </section>
+
+</main>
+
+<th:block th:replace="~{fragments/footer.html :: footer}" />
 
 </body>
-
 </html>

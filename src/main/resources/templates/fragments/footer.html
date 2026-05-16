@@ -2,24 +2,69 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Footer fragment - rest is empty</title>
+    <title>TriviaBlast Footer Fragment</title>
 </head>
 
 <body>
-    <!-- ver https://getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/ -->
-    <footer th:fragment="footer" class="footer mt-auto py-3 bg-light">
-        <div class="container justify-content-center d-flex">
-            <span class="text-muted">Aplicación web para Trivia online. Lee el <a href="https://github.com/inestrivino/TriviaBlast" target="_blank">código</a>.</span>
-        </div>
-        <!-- Bootstrap -->
-        <script th:src="@{/js/bootstrap.bundle-5.3.3.js}" src="js/bootstrap.bundle-5.3.3.js"></script>
 
-        <!-- Websockets -->
-        <script th:src="@{/js/stomp.js}" src="js/stomp.js"></script>
-        <script th:src="@{/js/iw.js}" src="js/iw.js"></script>
-        <script th:src="@{/js/triviablast.js}" src="js/triviablast.js"></script>
-        <script th:src="@{/js/svg.min.js}" src="js/svg.min.js"></script>
-    </footer>
+<footer th:fragment="footer"
+        class="custom-footer">
+
+    <div class="container">
+
+        <div class="footer-content">
+
+            <!-- LEFT -->
+
+            <div class="footer-left">
+
+                <div class="footer-logo">
+
+                    <span>TriviaBlast</span>
+
+                </div>
+
+                
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="footer-right">
+
+                <a href="https://github.com/1unaelumen/Triviablast"
+                   target="_blank"
+                   class="footer-github-btn">
+
+                    View Source Code
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap -->
+    <script th:src="@{/js/bootstrap.bundle-5.3.3.js}"
+            src="js/bootstrap.bundle-5.3.3.js"></script>
+
+    <!-- Websockets -->
+    <script th:src="@{/js/stomp.js}"
+            src="js/stomp.js"></script>
+
+    <script th:src="@{/js/iw.js}"
+            src="js/iw.js"></script>
+
+    <script th:src="@{/js/triviablast.js}"
+            src="js/triviablast.js"></script>
+
+    <script th:src="@{/js/svg.min.js}"
+            src="js/svg.min.js"></script>
+
+</footer>
+
 </body>
 
 </html>

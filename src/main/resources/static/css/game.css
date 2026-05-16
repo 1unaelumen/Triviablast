@@ -1,0 +1,127 @@
+/* game page */
+.game-page {
+    min-height: calc(100vh - 130px);
+    background: linear-gradient(135deg, #0d6efd 0%, #2f80ed 55%, #ffd43b 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+}
+
+.game-section {
+    width: 100%;
+    max-width: 760px;
+}
+
+.game-card {
+    width: 100%;
+    padding: 26px 34px 28px;
+    border-radius: 26px;
+    background: rgba(255,255,255,0.96);
+    border: 3px solid #ffd43b;
+    box-shadow: 0 16px 38px rgba(0,0,0,0.18);
+}
+
+.game-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.game-exit-btn {
+    padding: 9px 18px;
+    border-radius: 14px;
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.game-exit-btn:hover {
+    color: white;
+}
+
+.game-status {
+    padding: 9px 18px;
+    border-radius: 14px;
+    background: #ffd43b;
+    color: #1d3557;
+    font-weight: 900;
+}
+
+.game-badge {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: #ffd43b;
+    color: #1d3557;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.game-question {
+    font-size: 1.55rem;
+    line-height: 1.35;
+    font-weight: 800;
+    color: #1d3557;
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.game-answers {
+    display: grid;
+    gap: 11px;
+}
+
+.game-answers button,
+.game-answers .btn {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 15px;
+    border: 2px solid #d6e8ff;
+    background: #f8fbff;
+    color: #1d3557;
+    font-size: 0.98rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.game-answers button:hover,
+.game-answers .btn:hover {
+    background: #eaf4ff;
+    border-color: #0d6efd;
+}
+
+.game-feedback {
+    min-height: 22px;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.game-next-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.game-next-btn {
+    min-width: 220px;
+    border: none;
+    border-radius: 16px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #198754, #20c997);
+    color: white;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.game-next-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}

@@ -1,106 +1,149 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html class="h-100"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
-    <title th:text="|IW: Error ${status}|">IW: Error</title>
+    <title th:text="|TriviaBlast Error ${status}|">TriviaBlast Error</title>
 </head>
 
-<body>
-    <nav th:replace="~{fragments/nav.html :: nav}">
-        Nav goes here
-    </nav>
+<body class="d-flex flex-column h-100">
 
-    <div class="container">
-        <div class="main">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
 
-            <h4>Error <span th:text="${status}"></span></h4>
+<main class="error-page flex-grow-1">
 
-            <div th:unless="${application.debug}">
-                <img th:src="|https://http.cat/${status}|" alt="gato ilustrando problema" />
-                <p>Los administradores están informados. Puedes volver a intentar hacer lo que estabas haciendo de otra forma, o esperar a que solucionen el problema.</p>
+    <div class="container error-container">
+
+        <div class="error-card">
+
+            <div class="error-badge">
+                ERROR
             </div>
-            <div th:if="${application.debug}">
-                <p>Ha pasado algo feo. Mira el log del servidor para saber más detalles.</p>
 
-                <h4>Detalles del error</h4>
-                <table class="errTable">
-                    <tr>
-                        <td>Date</td>
-                        <td th:text="${timestamp}"></td>
-                    </tr>
-                    <tr>
-                        <td>Path</td>
-                        <td th:text="${path}"></td>
-                    </tr>
-                    <tr>
-                        <td>Error</td>
-                        <td th:text="${error}"></td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td th:text="${status}"></td>
-                    </tr>
-                    <tr>
-                        <td>Mensaje</td>
-                        <td th:text="${message}"></td>
-                    </tr>
-                    <tr>
-                        <td>Excepción</td>
-                        <td th:text="${exception}"></td>
-                    </tr>
-                    <tr>
-                        <td>Traza</td>
-                        <td><pre th:text="${trace}" /></td>
-                    </tr>
-                </table>
+            <h1 class="error-title">
+                Oops! Error <span th:text="${status}">500</span>
+            </h1>
 
-                <h4>Variables definidas en sesión</h4>
-                <table class="errTable">
-                    <tr th:each="v: ${sess}">
-                        <td><span class="errKey" th:text="${v.key}"></span>
-                            <td th:text="${v.value}">
-                </table>
+            <div th:unless="${application.debug}" class="error-public">
 
-                <h4>Variables definidas en parámetros</h4>
-                <table class="errTable">
-                    <tr th:each="v: ${param}">
-                        <td th:text="${v.key}"></td>
-                        <td>
-                            <div th:each="v: ${v.value}">
-                                <div th:text="${v}"></div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <img class="error-image"
+                     th:src="|https://http.cat/${status}|"
+                     alt="Error illustration" />
 
-                <h4>Otras</h4>
-                <table class="errTable" th:if="${req != null}">
-                    <tr>
-                        <td>req.url</td>
-                        <td th:text="${req.requestURL}"></td>
-                    </tr>
-                    <tr>
-                        <td>req.uri</td>
-                        <td th:text="${req.requestURI}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>req.getHeader("User-Agent")</td>
-                        <td th:text="${req.getHeader('User-Agent')}"></td>
-                    </tr>
-                </table>
+                <p class="error-message">
+                    Something went wrong. The administrators have been informed.
+                    You can go back and try again later.
+                </p>
+
+                <a th:href="@{/}"
+                   href="/"
+                   class="error-home-btn">
+                    Back to Home
+                </a>
+
+            </div>
+
+            <div th:if="${application.debug}" class="error-debug">
+
+                <p class="error-message">
+                    Something went wrong. Check the server log for more details.
+                </p>
+
+                <h2>Error Details</h2>
+
+                <div class="table-responsive">
+                    <table class="errTable error-table">
+                        <tr>
+                            <td>Date</td>
+                            <td th:text="${timestamp}"></td>
+                        </tr>
+                        <tr>
+                            <td>Path</td>
+                            <td th:text="${path}"></td>
+                        </tr>
+                        <tr>
+                            <td>Error</td>
+                            <td th:text="${error}"></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td th:text="${status}"></td>
+                        </tr>
+                        <tr>
+                            <td>Message</td>
+                            <td th:text="${message}"></td>
+                        </tr>
+                        <tr>
+                            <td>Exception</td>
+                            <td th:text="${exception}"></td>
+                        </tr>
+                        <tr>
+                            <td>Trace</td>
+                            <td>
+                                <pre th:text="${trace}"></pre>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Session Variables</h2>
+
+                <div class="table-responsive">
+                    <table class="errTable error-table">
+                        <tr th:each="v: ${sess}">
+                            <td>
+                                <span class="errKey" th:text="${v.key}"></span>
+                            </td>
+                            <td th:text="${v.value}"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Request Parameters</h2>
+
+                <div class="table-responsive">
+                    <table class="errTable error-table">
+                        <tr th:each="v: ${param}">
+                            <td th:text="${v.key}"></td>
+                            <td>
+                                <div th:each="item: ${v.value}">
+                                    <div th:text="${item}"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Other</h2>
+
+                <div class="table-responsive">
+                    <table class="errTable error-table" th:if="${req != null}">
+                        <tr>
+                            <td>req.url</td>
+                            <td th:text="${req.requestURL}"></td>
+                        </tr>
+                        <tr>
+                            <td>req.uri</td>
+                            <td th:text="${req.requestURI}"></td>
+                        </tr>
+                        <tr>
+                            <td>req.getHeader("User-Agent")</td>
+                            <td th:text="${req.getHeader('User-Agent')}"></td>
+                        </tr>
+                    </table>
+                </div>
 
             </div>
 
         </div>
-        <!-- end main div -->
+
     </div>
-    <!-- end container div -->
 
-    <footer th:replace="~{fragments/footer.html :: footer}">
-        Footer goes here
-    </footer>
+</main>
+
+<th:block th:replace="~{fragments/footer.html :: footer}" />
+
 </body>
-
 </html>

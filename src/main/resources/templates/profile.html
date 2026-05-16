@@ -2,225 +2,325 @@
 <html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:replace="fragments/head :: header" />
+    <th:block th:replace="~{fragments/head :: header}" />
     <title>User Profile</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/profile.css}"
+          href="/css/profile.css">
 </head>
 
 <body class="d-flex flex-column h-100" th:attr="data-open-tab=${openTab}">
 
-    <header th:replace="fragments/nav :: nav"></header>
+<header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0">
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-6">
+<main class="profile-page flex-grow-1">
 
-                    <div class="card shadow p-4 position-relative">
+    <div class="container">
 
-                        <!-- Button to open edit modal -->
-                        <button
-                            class="btn btn-secondary position-absolute top-0 end-0 m-3 d-flex align-items-center justify-content-center "
-                            data-bs-toggle="modal" data-bs-target="#miModal">
-                            Edit
-                            <i class="bi bi-gear-fill"></i>
-                        </button>
+        <div class="profile-card">
 
-                        <!-- Edit profile modal -->
-                        <div class="modal fade" id="miModal" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Settings</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
+            <button class="profile-edit-btn"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#miModal">
+                Edit
+            </button>
 
-                                    <div class="modal-body">
+            <div class="profile-avatar-wrap">
+                <img class="profile-avatar"
+                     th:src="@{'/user/' + ${user.id} + '/pic'}"
+                     alt="User Avatar">
+            </div>
 
-                                        <!-- Tabs -->
-                                        <ul class="nav nav-tabs mb-3" role="tablist">
-                                            <li class="nav-item">
-                                                <button class="nav-link active" data-bs-toggle="tab"
-                                                    data-bs-target="#picture">Picture</button>
-                                            </li>
-                                            <li class="nav-item">
-                                                <button class="nav-link" data-bs-toggle="tab"
-                                                    data-bs-target="#name">Profile</button>
-                                            </li>
-                                            <li class="nav-item">
-                                                <button class="nav-link" data-bs-toggle="tab"
-                                                    data-bs-target="#password">Password</button>
-                                            </li>
-                                        </ul>
+            <h1 class="profile-name"
+                th:text="${user.username}">
+                Username
+            </h1>
 
-                                        <div class="tab-content">
+            <div class="profile-points-box">
+                <span>Total Points</span>
+                <strong th:text="${user.totalPoints}">0</strong>
+            </div>
 
-                                            <!-- PROFILE PICTURE -->
-                                            <div class="tab-pane fade show active" id="picture">
-                                                <form th:action="@{'/user/' + ${user.id} + '/pic'}" method="post"
-                                                    enctype="multipart/form-data">
+            <div class="profile-actions">
 
-                                                    <input type="hidden" name="formType" value="avatar">
-                                                    <input type="hidden" th:name="${_csrf.parameterName}"
-                                                        th:value="${_csrf.token}" />
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit"
+                            class="profile-logout-btn">
+                        Log Out
+                    </button>
+                </form>
 
-                                                    <div class="mb-3">
-                                                        <input type="file" name="photo" class="form-control">
-                                                    </div>
+                <form th:action="@{'/user/' + ${user.id} + '/delete'}"
+                      method="post"
+                      onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
 
-                                                    <button type="submit" class="btn btn-primary w-100">
-                                                        Save Picture
-                                                    </button>
-                                                </form>
-                                            </div>
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}" />
 
-                                            <!-- USERNAME + EMAIL -->
-                                            <div class="tab-pane fade" id="name">
-                                                <form th:action="@{'/user/' + ${user.id}}" method="post">
-                                                    <input type="hidden" name="formType" value="userNameEmail">
-                                                    <input type="hidden" th:name="${_csrf.parameterName}"
-                                                        th:value="${_csrf.token}" />
+                    <button type="submit"
+                            class="profile-delete-btn">
+                        Delete Account
+                    </button>
 
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Username</label>
-                                                        <input type="text" class="form-control" name="username"
-                                                            th:value="${user.username}">
-                                                    </div>
+                </form>
 
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="email" class="form-control" name="email"
-                                                            th:value="${user.email}">
-                                                    </div>
+            </div>
 
-                                                    <button type="submit" class="btn btn-primary w-100">
-                                                        Save Changes
-                                                    </button>
-                                                </form>
-                                            </div>
+        </div>
 
-                                            <!-- PASSWORD -->
-                                            <div class="tab-pane fade" id="password">
-                                                <form th:action="@{'/user/' + ${user.id}}" method="post">
-                                                    <input type="hidden" th:name="${_csrf.parameterName}"
-                                                        th:value="${_csrf.token}" />
-                                                    <input type="hidden" name="formType" value="password">
+    </div>
 
-                                                    <!-- CURRENT PASSWORD -->
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Current Password</label>
-                                                        <input type="password" class="form-control"
-                                                            name="currentPassword" required>
-                                                    </div>
+    <!-- EDIT PROFILE MODAL -->
 
-                                                    <!-- NEW PASSWORD -->
-                                                    <div class="mb-3">
-                                                        <label class="form-label">New Password</label>
-                                                        <input type="password" class="form-control" name="password"
-                                                            required>
-                                                    </div>
+    <div class="modal fade" id="miModal" tabindex="-1">
 
-                                                    <!-- REPEAT NEW PASSWORD -->
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Repeat New Password</label>
-                                                        <input type="password" class="form-control" name="pass2"
-                                                            required>
-                                                    </div>
+        <div class="modal-dialog modal-dialog-centered">
 
-                                                    <!-- Errors-->
-                                                    <div th:if="${error == 'password_mismatch'}"
-                                                        class="alert alert-danger">
-                                                        New passwords do not match.
-                                                    </div>
-                                                    <div th:if="${error == 'current_password_incorrect'}"
-                                                        class="alert alert-danger">
-                                                        Current password is incorrect.
-                                                    </div>
+            <div class="modal-content profile-modal">
 
-                                                    <button type="submit" class="btn btn-primary w-100">
-                                                        Save Password
-                                                    </button>
-                                                </form>
-                                            </div>
+                <div class="modal-header profile-modal-header">
 
-                                        </div>
-                                    </div>
+                    <h5 class="modal-title">
+                        Settings
+                    </h5>
 
-                                    <div class="modal-footer">
-                                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                            Close
-                                        </button>
-                                    </div>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <ul class="nav nav-tabs profile-tabs mb-3" role="tablist">
+
+                        <li class="nav-item">
+                            <button class="nav-link active"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#picture"
+                                    type="button">
+                                Picture
+                            </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#name"
+                                    type="button">
+                                Profile
+                            </button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#password"
+                                    type="button">
+                                Password
+                            </button>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!-- PROFILE PICTURE -->
+
+                        <div class="tab-pane fade show active" id="picture">
+
+                            <form th:action="@{'/user/' + ${user.id} + '/pic'}"
+                                  method="post"
+                                  enctype="multipart/form-data">
+
+                                <input type="hidden" name="formType" value="avatar">
+
+                                <input type="hidden"
+                                       th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}" />
+
+                                <div class="mb-3">
+                                    <input type="file"
+                                           name="photo"
+                                           class="form-control profile-input">
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Profile picture -->
-                        <div class="text-center">
-                            <img div class="rounded-circle overflow-hidden mx-auto" style="width: 150px; height: 150px;"
-                                th:src="@{'/user/' + ${user.id} + '/pic'}" alt="User Avatar">
-                        </div>
+                                <button type="submit"
+                                        class="profile-save-btn">
+                                    Save Picture
+                                </button>
 
-                        <!-- Username -->
-                        <h2 class="text-center mb-3" th:text="${user.username}">Username</h2>
-
-                        <hr>
-
-                        <!-- Total Points -->
-                        <p>
-                            <strong>Total Points:</strong>
-                            <span class="text-success" th:text="${user.totalPoints}">0</span>
-                        </p>
-
-                        <!-- ACTION BUTTONS -->
-                        <div class="d-grid gap-2">
-                            <!-- Logout -->
-                            <form th:action="@{/logout}" method="post">
-                                <button type="submit" class="btn btn-outline-secondary w-100">Log Out</button>
                             </form>
 
-                            <!-- Delete Account -->
-                            <form th:action="@{'/user/' + ${user.id} + '/delete'}" method="post"
-                                onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                <button type="submit" class="btn btn-danger w-100">Delete Account</button>
+                        </div>
+
+                        <!-- USERNAME + EMAIL -->
+
+                        <div class="tab-pane fade" id="name">
+
+                            <form th:action="@{'/user/' + ${user.id}}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="formType"
+                                       value="userNameEmail">
+
+                                <input type="hidden"
+                                       th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}" />
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Username
+                                    </label>
+
+                                    <input type="text"
+                                           class="form-control profile-input"
+                                           name="username"
+                                           th:value="${user.username}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Email
+                                    </label>
+
+                                    <input type="email"
+                                           class="form-control profile-input"
+                                           name="email"
+                                           th:value="${user.email}">
+                                </div>
+
+                                <button type="submit"
+                                        class="profile-save-btn">
+                                    Save Changes
+                                </button>
+
                             </form>
+
+                        </div>
+
+                        <!-- PASSWORD -->
+
+                        <div class="tab-pane fade" id="password">
+
+                            <form th:action="@{'/user/' + ${user.id}}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}" />
+
+                                <input type="hidden"
+                                       name="formType"
+                                       value="password">
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Current Password
+                                    </label>
+
+                                    <input type="password"
+                                           class="form-control profile-input"
+                                           name="currentPassword"
+                                           required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        New Password
+                                    </label>
+
+                                    <input type="password"
+                                           class="form-control profile-input"
+                                           name="password"
+                                           required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Repeat New Password
+                                    </label>
+
+                                    <input type="password"
+                                           class="form-control profile-input"
+                                           name="pass2"
+                                           required>
+                                </div>
+
+                                <div th:if="${error == 'password_mismatch'}"
+                                     class="alert alert-danger">
+                                    New passwords do not match.
+                                </div>
+
+                                <div th:if="${error == 'current_password_incorrect'}"
+                                     class="alert alert-danger">
+                                    Current password is incorrect.
+                                </div>
+
+                                <button type="submit"
+                                        class="profile-save-btn">
+                                    Save Password
+                                </button>
+
+                            </form>
+
                         </div>
 
                     </div>
 
                 </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-outline-secondary"
+                            type="button"
+                            data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                </div>
+
             </div>
+
         </div>
-    </main>
 
-    <th:block th:replace="fragments/footer :: footer" />
+    </div>
 
-    <script th:src="@{/js/triviablast.js}"></script>
+</main>
 
-    <script>
-        //TO DO: FRONTEND SHOULD UPDATE WITH AJAX THIS IS TEMPORARY
-        window.addEventListener('DOMContentLoaded', function () {
-            const openTab = document.body.dataset.openTab;
+<th:block th:replace="~{fragments/footer.html :: footer}" />
 
-            if (openTab) {
-                const modalEl = document.getElementById('miModal');
-                const modal = new bootstrap.Modal(modalEl);
-                modal.show();
+<script th:src="@{/js/triviablast.js}"></script>
 
-                const tabTrigger = document.querySelector('[data-bs-target="#' + openTab + '"]');
-                if (tabTrigger) {
-                    new bootstrap.Tab(tabTrigger).show();
-                }
-            }
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const openTab = document.body.dataset.openTab;
 
+        if (openTab) {
             const modalEl = document.getElementById('miModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
 
-            modalEl.addEventListener('hidden.bs.modal', function () {
-                const alerts = modalEl.querySelectorAll('.alert');
-                alerts.forEach(alert => alert.remove());
-            });
+            const tabTrigger = document.querySelector('[data-bs-target="#' + openTab + '"]');
+
+            if (tabTrigger) {
+                new bootstrap.Tab(tabTrigger).show();
+            }
+        }
+
+        const modalEl = document.getElementById('miModal');
+
+        modalEl.addEventListener('hidden.bs.modal', function () {
+            const alerts = modalEl.querySelectorAll('.alert');
+            alerts.forEach(alert => alert.remove());
         });
-    </script>
+    });
+</script>
 
 </body>
 

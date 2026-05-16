@@ -1,98 +1,185 @@
 <!DOCTYPE html>
-<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+<html class="h-100"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>Log In</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/login.css}"
+          href="/css/login.css">
 </head>
 
 <body class="d-flex flex-column h-100">
-    <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="d-flex align-items-center min-vh-100">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-sm-10 col-md-6 col-lg-4">
-                    <div class="auth-box">
+<header th:replace="~{fragments/nav.html :: nav}"></header>
 
-                        <div th:if="${error == 'password_mismatch'}" class="alert alert-danger">
-                            Passwords do not match.
+<main class="auth-page">
+
+    <div class="auth-shape auth-shape-1"></div>
+    <div class="auth-shape auth-shape-2"></div>
+
+    <div class="container">
+
+        <div class="row justify-content-center align-items-center min-vh-100">
+
+            <div class="col-lg-10">
+
+                <div class="auth-container">
+
+                    <!-- LEFT SIDE -->
+
+                    <div class="auth-left">
+
+                        <div class="auth-badge">
+                            TRIVIA GAME
                         </div>
 
-                        <!-- LOGIN FORM -->
-                        <form id="loginForm" method="post" th:action="@{/login}">
-                            <h2 class="mb-4 text-center">Sign in</h2>
+                        <h1 class="auth-title">
+                            Trivia<span>Blast</span>
+                        </h1>
 
-                            <p th:if="${loginError}" class="text-danger text-center">
-                                Invalid username or password
-                            </p>
+                        <p class="auth-description">
+                            Challenge yourself with exciting questions,
+                            improve your knowledge, and enjoy a colorful
+                            trivia experience.
+                        </p>
 
-                            <div class="mb-3">
-                                <input type="text" name="username" class="form-control" placeholder="Username" required>
+                    </div>
+
+                    <!-- RIGHT SIDE -->
+
+                    <div class="auth-right">
+
+                        <div class="auth-box">
+
+                            <div th:if="${error == 'password_mismatch'}"
+                                 class="alert alert-danger">
+                                Passwords do not match.
                             </div>
 
-                            <div class="mb-3">
-                                <input type="password" name="password" class="form-control" placeholder="Password"
-                                    required>
-                            </div>
+                            <!-- LOGIN FORM -->
 
-                            <button class="btn btn-primary w-100 mb-3" type="submit">
-                                Sign in
-                            </button>
+                            <form id="loginForm"
+                                  method="post"
+                                  th:action="@{/login}">
 
-                            <div class="text-center">
-                                <small>
+                                <h2 class="auth-form-title">
+                                    Sign In
+                                </h2>
+
+                                <p th:if="${loginError}"
+                                   class="text-danger text-center mb-3">
+                                    Invalid username or password
+                                </p>
+
+                                <div class="mb-3">
+                                    <input type="text"
+                                           name="username"
+                                           class="form-control auth-input"
+                                           placeholder="Username"
+                                           required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <input type="password"
+                                           name="password"
+                                           class="form-control auth-input"
+                                           placeholder="Password"
+                                           required>
+                                </div>
+
+                                <button class="auth-btn"
+                                        type="submit">
+                                    Sign In
+                                </button>
+
+                                <div class="auth-switch">
                                     Don't have an account?
-                                    <a href="#" onclick="toggleForms(); return false;">
+
+                                    <a href="#"
+                                       onclick="toggleForms(); return false;">
                                         Create Account
                                     </a>
-                                </small>
-                            </div>
-                        </form>
+                                </div>
 
-                        <!-- REGISTER FORM -->
-                        <form id="registerForm" method="post" th:action="@{/user/register}" style="display: none;">
+                            </form>
 
-                            <h2 class="mb-4 text-center">Create Account</h2>
+                            <!-- REGISTER FORM -->
 
-                            <div class="mb-3">
-                                <input type="text" name="username" class="form-control" placeholder="Username" required>
-                            </div>
+                            <form id="registerForm"
+                                  method="post"
+                                  th:action="@{/user/register}"
+                                  style="display: none;">
 
-                            <div class="mb-3">
-                                <input type="email" name="email" class="form-control" placeholder="Email" required>
-                            </div>
+                                <h2 class="auth-form-title">
+                                    Create Account
+                                </h2>
 
-                            <div class="mb-3">
-                                <input type="password" name="password" class="form-control" placeholder="Password"
-                                    required>
-                            </div>
+                                <div class="mb-3">
+                                    <input type="text"
+                                           name="username"
+                                           class="form-control auth-input"
+                                           placeholder="Username"
+                                           required>
+                                </div>
 
-                            <div class="mb-3">
-                                <input type="password" name="pass2" class="form-control" placeholder="Repeat Password"
-                                    required>
-                            </div>
+                                <div class="mb-3">
+                                    <input type="email"
+                                           name="email"
+                                           class="form-control auth-input"
+                                           placeholder="Email"
+                                           required>
+                                </div>
 
-                            <button class="btn btn-primary w-100 mb-3" type="submit">
-                                Create Account
-                            </button>
+                                <div class="mb-3">
+                                    <input type="password"
+                                           name="password"
+                                           class="form-control auth-input"
+                                           placeholder="Password"
+                                           required>
+                                </div>
 
-                            <div class="text-center">
-                                <small>
+                                <div class="mb-3">
+                                    <input type="password"
+                                           name="pass2"
+                                           class="form-control auth-input"
+                                           placeholder="Repeat Password"
+                                           required>
+                                </div>
+
+                                <button class="auth-btn"
+                                        type="submit">
+                                    Create Account
+                                </button>
+
+                                <div class="auth-switch">
                                     Already have an account?
-                                    <a href="#" onclick="toggleForms(); return false;">
-                                        Sign in
+
+                                    <a href="#"
+                                       onclick="toggleForms(); return false;">
+                                        Sign In
                                     </a>
-                                </small>
-                            </div>
-                        </form>
+                                </div>
+
+                            </form>
+
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
-    </main>
 
-    <th:block th:replace="~{fragments/footer.html :: footer}" />
+    </div>
+
+</main>
+
+<th:block th:replace="~{fragments/footer.html :: footer}" />
+
 </body>
-
 </html>

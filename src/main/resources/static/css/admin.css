@@ -1,0 +1,139 @@
+/* admin page*/
+
+.admin-page {
+    min-height: auto;
+    background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 55%, #ffd43b 100%);
+    padding: 55px 20px 120px;
+}
+
+.admin-header {
+    margin-bottom: 28px;
+}
+
+.admin-badge {
+    display: inline-block;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background: #ffd43b;
+    color: #1d3557;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.admin-title {
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 900;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.admin-subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.05rem;
+    margin-bottom: 0;
+}
+
+.admin-card {
+    background: rgba(255,255,255,0.96);
+    border-radius: 28px;
+    padding: 28px;
+    border: 3px solid rgba(255,212,59,0.95);
+    box-shadow: 0 16px 38px rgba(0,0,0,0.18);
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.admin-section-header h2 {
+    margin: 0;
+    color: #1d3557;
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+
+.admin-table {
+    margin-bottom: 0;
+}
+
+.admin-table thead th {
+    border: none !important;
+    color: #1d3557;
+    font-size: 0.95rem;
+    font-weight: 900;
+    padding: 12px 10px;
+}
+
+.admin-table td {
+    border: none !important;
+    padding: 13px 10px;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr {
+    background: #f8fbff;
+    border-radius: 16px;
+}
+
+.admin-role-pill,
+.admin-points-pill,
+.admin-visibility-pill {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+.admin-role-pill {
+    background: rgba(13,110,253,0.12);
+    color: #0d6efd;
+}
+
+.admin-points-pill {
+    background: rgba(255,212,59,0.35);
+    color: #1d3557;
+}
+
+.admin-visibility-pill {
+    background: rgba(25,135,84,0.12);
+    color: #198754;
+}
+
+.admin-action-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 9px 14px;
+    color: white;
+    font-weight: 800;
+}
+
+.admin-danger-btn {
+    background: #dc3545;
+}
+
+.admin-primary-btn {
+    background: #0d6efd;
+}
+
+.admin-refresh-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #0d6efd, #0096ff);
+    color: white;
+    font-weight: 800;
+}
+
+.admin-messages-box {
+    background: #f8fbff;
+    border-radius: 18px;
+    padding: 18px;
+    overflow-x: auto;
+}

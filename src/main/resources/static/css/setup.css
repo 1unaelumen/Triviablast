@@ -1,0 +1,175 @@
+/* setup page */
+
+.setup-page {
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d6efd 0%,
+            #3b82f6 45%,
+            #ffd43b 100%
+        );
+}
+
+.setup-shape {
+    position: absolute;
+
+    border-radius: 50%;
+
+    opacity: 0.18;
+}
+
+.setup-shape-1 {
+    width: 320px;
+    height: 320px;
+
+    background: white;
+
+    top: -80px;
+    left: -80px;
+}
+
+.setup-shape-2 {
+    width: 220px;
+    height: 220px;
+
+    background: #ffd43b;
+
+    bottom: 8%;
+    right: 8%;
+}
+
+.setup-card {
+    position: relative;
+    z-index: 2;
+
+    padding: 60px 50px;
+
+    border-radius: 34px;
+
+    background: rgba(255,255,255,0.94);
+
+    border: 4px solid rgba(255,212,59,0.95);
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.2);
+}
+
+
+.setup-badge {
+    display: inline-block;
+
+    padding: 10px 20px;
+
+    border-radius: 999px;
+
+    background: #ffd43b;
+
+    color: #1d3557;
+
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    margin-bottom: 24px;
+}
+
+
+.setup-title {
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+
+    font-weight: 900;
+
+    line-height: 1;
+
+    margin-bottom: 18px;
+
+    color: #0d6efd;
+}
+
+.setup-subtitle {
+    color: #495057;
+
+    font-size: 1.1rem;
+
+    margin-bottom: 40px;
+}
+
+.setup-group {
+    margin-bottom: 28px;
+}
+
+.setup-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-weight: 700;
+
+    color: #1d3557;
+
+    font-size: 1rem;
+}
+
+.setup-select {
+    height: 58px;
+
+    border-radius: 16px !important;
+
+    border: 2px solid #dee2e6;
+
+    padding: 0 18px;
+
+    font-size: 1rem;
+}
+
+.setup-select:focus {
+    border-color: #0d6efd;
+
+    box-shadow:
+        0 0 0 0.25rem rgba(13,110,253,0.18);
+}
+
+
+.setup-btn {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 999px;
+
+    padding: 18px 20px;
+
+    margin-top: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d6efd,
+            #0096ff
+        );
+
+    color: white;
+
+    font-size: 1.15rem;
+    font-weight: 800;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+    box-shadow:
+        0 14px 28px rgba(13,110,253,0.25);
+}
+
+.setup-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 18px 34px rgba(13,110,253,0.35);
+}

@@ -4,67 +4,165 @@
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>Authors</title>
-    <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
-        type="text/css" />
+
+    <link rel="stylesheet"
+          th:href="@{/css/simple-datatables-10.css}"
+          href="/css/simple-datatables-10.css"
+          type="text/css" />
+
+    <link rel="stylesheet"
+          th:href="@{/css/authors.css}"
+          href="/css/authors.css">
 </head>
 
 <body class="d-flex flex-column h-100">
-    <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0">
-        <div class="container">
-            <h1 class="mt-5">Authors</h1>
-            <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
-                <div class="col">
-                    <div class="card h-100">
-                        <img th:src="@{/img/Nerea.png}" class="card-img-top" alt="Nerea">
-                        <div class="card-body">
-                            <h5 class="card-title">Nerea Arias</h5>
-                            <p class="card-text">Informatics Engineering</p>
-                        </div>
-                    </div>
+<header th:replace="~{fragments/nav.html :: nav}"></header>
+
+<main class="authors-page flex-grow-1">
+
+    <div class="container authors-container">
+
+        <div class="authors-card">
+
+            <div class="authors-header text-center">
+
+                <div class="authors-badge">
+                    DEVELOPMENT TEAM
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img th:src="@{/img/Jieru.png}" class="card-img-top" alt="Jieru">
-                        <div class="card-body">
-                            <h5 class="card-title">Jieru Peng</h5>
-                            <p class="card-text">Software Engineering</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img th:src="@{/img/Alexandra.png}" class="card-img-top" alt="Alexandra">
-                        <div class="card-body">
-                            <h5 class="card-title">Alexanda Radulescu</h5>
-                            <p class="card-text">Erasmus</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img th:src="@{/img/Inés.png}" class="card-img-top" alt="Inés">
-                        <div class="card-body">
-                            <h5 class="card-title">Inés Triviño</h5>
-                            <p class="card-text">Software Engineering</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img th:src="@{/img/Alara.png}" class="card-img-top" alt="Alara">
-                        <div class="card-body">
-                            <h5 class="card-title">Alara</h5>
-                            <p class="card-text">Erasmus</p>
-                        </div>
-                    </div>
-                </div>
+
+                <h1 class="authors-title">
+                    Meet The Authors
+                </h1>
+
+                <p class="authors-subtitle">
+                    The team behind TriviaBlast.
+                </p>
+
             </div>
-        </div>
-    </main>
 
-    <th:block th:replace="~{fragments/footer.html :: footer}" />
+            <div class="row g-4 justify-content-center">
+
+                <!-- Nerea -->
+                <div class="col-md-4">
+                    <div class="author-profile-card">
+
+                        <div class="author-image-wrapper">
+                            <img th:src="@{/img/Nerea.png}"
+                                 src="/img/Nerea.png"
+                                 alt="Nerea"
+                                 class="author-image">
+                        </div>
+
+                        <h3 class="author-name">
+                            Nerea Arias
+                        </h3>
+
+                        <p class="author-role">
+                            Informatics Engineering
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Jieru -->
+                <div class="col-md-4">
+                    <div class="author-profile-card">
+
+                        <div class="author-image-wrapper">
+                            <img th:src="@{/img/Jieru.png}"
+                                 src="/img/Jieru.png"
+                                 alt="Jieru"
+                                 class="author-image">
+                        </div>
+
+                        <h3 class="author-name">
+                            Jieru Peng
+                        </h3>
+
+                        <p class="author-role">
+                            Software Engineering
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Alexandra -->
+                <div class="col-md-4">
+                    <div class="author-profile-card">
+
+                        <div class="author-image-wrapper">
+                            <img th:src="@{/img/Alexandra.png}"
+                                 src="/img/Alexandra.png"
+                                 alt="Alexandra"
+                                 class="author-image">
+                        </div>
+
+                        <h3 class="author-name">
+                            Alexandra Radulescu
+                        </h3>
+
+                        <p class="author-role">
+                            Erasmus Student
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Ines -->
+                <div class="col-md-4">
+                    <div class="author-profile-card">
+
+                        <div class="author-image-wrapper">
+                            <img th:src="@{/img/Inés.png}"
+                                 src="/img/Inés.png"
+                                 alt="Ines"
+                                 class="author-image">
+                        </div>
+
+                        <h3 class="author-name">
+                            Inés Triviño
+                        </h3>
+
+                        <p class="author-role">
+                            Software Engineering
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Alara -->
+                <div class="col-md-4">
+                    <div class="author-profile-card">
+
+                        <div class="author-image-wrapper">
+                            <img th:src="@{/img/Alara.png}"
+                                 src="/img/Alara.png"
+                                 alt="Alara"
+                                 class="author-image">
+                        </div>
+
+                        <h3 class="author-name">
+                            Alara
+                        </h3>
+
+                        <p class="author-role">
+                            Erasmus Student
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<th:block th:replace="~{fragments/footer.html :: footer}" />
+
 </body>
 
 </html>

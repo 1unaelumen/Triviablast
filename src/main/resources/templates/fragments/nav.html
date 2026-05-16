@@ -1,81 +1,73 @@
 <!DOCTYPE html>
-<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <title>TriviaBlast Nav Fragment</title>
 </head>
 
-<body class="d-flex flex-column h-100">
+<body>
 
-    <header th:fragment="nav">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
+<header th:fragment="nav">
 
-                <!-- Logo + Title -->
-                <a class="navbar-brand d-flex align-items-center" th:href="@{/}" href="/">
-                    <img th:src="@{/img/logo.png}" src="/img/logo.png" alt="logo TriviaBlast" width="32" height="32"
-                        class="d-inline-block align-text-top me-2">
-                    TriviaBlast
+    <nav class="navbar custom-navbar">
+
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <!-- LEFT -->
+
+            <a class="navbar-brand custom-brand"
+               th:href="@{/}"
+               href="/">
+
+                <img th:src="@{/img/logo.png}"
+                     src="/img/logo.png"
+                     alt="TriviaBlast Logo"
+                     width="52"
+                     height="52">
+
+                <span>TriviaBlast</span>
+
+            </a>
+
+            <!-- RIGHT -->
+
+            <div class="navbar-nav d-flex flex-row align-items-center">
+
+                <a class="nav-link custom-nav-link"
+                   th:href="@{/user/scoreboard}">
+                    Scoreboard
                 </a>
 
+                <a class="nav-link custom-nav-link"
+                   th:href="@{/proposal}">
+                    Proposal
+                </a>
 
-                <!-- Hamburger view for small screens -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <a class="nav-link custom-nav-link"
+                   th:href="@{/user/profile}">
+                    Profile
+                </a>
 
-                <!-- Menu -->
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav ms-auto align-items-center">
+                <th:block th:unless="${u}">
 
-                        <!-- Scoreboard button -->
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" th:href="@{/user/scoreboard}" href="/user/scoreboard">Scoreboard</a>
-                        </li>
+                    <a class="custom-login-btn"
+                       th:href="@{/login}"
+                       sec:authorize="isAnonymous()">
 
-                        <!-- Proposal button -->
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" th:href="@{/proposal}" href="/proposal">Proposal</a>
-                        </li>
+                        Login
 
-                        <!-- Dropdown Views -->
-                        <li class="nav-item dropdown mx-2">
-                            <a class="nav-link dropdown-toggle" href="#" id="viewsDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Views
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="viewsDropdown">
-                                <li><a class="dropdown-item" th:href="@{/join_game}" href="/join_game">Join Game</a>
-                                </li>
-                                <li><a class="dropdown-item" th:href="@{/multi_game}" href="/multi_game">Multi Game</a>
-                                </li>
-                                <li><a class="dropdown-item" th:href="@{/multi_game_setup}"
-                                        href="/multi_game_setup">Multi Game Setup</a></li>
-                                <li><a class="dropdown-item" th:href="@{/multi_victoryscr}"
-                                        href="/multi_victoryscr">Multi Victory</a></li>
-                                <li><a class="dropdown-item" th:href="@{/user/profile}" href="/user/profile">Profile</a></li>
-                            </ul>
-                        </li>
+                    </a>
 
-                        <!-- Log in -->
-                        <th:block th:unless="${u}">
-                            <li class="nav-item mx-2">
-                                <a class="btn btn-outline-primary btn-sm" th:href="@{/login}" href="/login"
-                                    sec:authorize="isAnonymous()">Login</a>
-                            </li>
-                            <!--/*
-                                Esto es un comentario "thymeleaf" - no se verá en el HTML
-                                El bloque de "debug" sólo está activado si application.properties tiene debug a "true"
-                                    (ver StartupConfig.java para ver cómo se lee de la configuración
-                                    y luego se escribe a ${application.debug})
-                            */-->
-                        </th:block>
-                    </ul>
-                </div>
+                </th:block>
+
             </div>
-        </nav>
-    </header>
+
+        </div>
+
+    </nav>
+
+</header>
 
 </body>
 

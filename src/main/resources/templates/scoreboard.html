@@ -1,64 +1,121 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en"
+      class="h-100"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>Scoreboard</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/scoreboard.css}"
+          href="/css/scoreboard.css">
 </head>
 
 <body class="d-flex flex-column h-100">
 
-    <header th:replace="~{fragments/nav.html :: nav}"></header>
+<header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0">
-        <div class="container mt-5">
+<main class="scoreboard-page flex-grow-1">
 
-            <h1 class="text-center mb-4">Scoreboard</h1>
+    <div class="container">
 
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-8">
+        <div class="row justify-content-center">
 
-                    <div class="card shadow p-4">
+            <div class="col-lg-9">
 
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Points</th>
-                                        <th sec:authorize="hasRole('ADMIN')">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="user : ${users}"
-                                        th:classappend="${!user.visibilityState} ? 'opacity-50'">
+                <div class="scoreboard-card">
 
-                                        <td th:text="${user.username}">Name</td>
-                                        <td th:text="${user.totalPoints}">Points</td>
+                    <div class="scoreboard-badge">
+                        GLOBAL RANKING
+                    </div>
 
-                                        <td sec:authorize="hasRole('ADMIN')">
-                                            <button type="button" class="btn btn-sm toggle-btn"
-                                                th:classappend="${user.visibilityState} ? 'btn-outline-danger' : 'btn-success'"
-                                                th:text="${user.visibilityState} ? 'Hide' : 'Display'"
+                    <h1 class="scoreboard-title">
+                        Scoreboard
+                    </h1>
+
+                    <p class="scoreboard-subtitle">
+                        See the best trivia players and their scores.
+                    </p>
+
+                    <div class="table-responsive">
+
+                        <table class="table scoreboard-table align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Points</th>
+
+                                    <th sec:authorize="hasRole('ADMIN')">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr th:each="user, iter : ${users}"
+                                    th:classappend="${!user.visibilityState} ? 'opacity-50'">
+
+                                    <td>
+                                        <div class="rank-circle"
+                                             th:text="${iter.index + 1}">
+                                            1
+                                        </div>
+                                    </td>
+
+                                    <td class="fw-bold"
+                                        th:text="${user.username}">
+                                        Name
+                                    </td>
+
+                                    <td>
+                                        <span class="score-points"
+                                              th:text="${user.totalPoints + ' pts'}">
+                                            100 pts
+                                        </span>
+                                    </td>
+
+                                    <td sec:authorize="hasRole('ADMIN')">
+
+                                        <button type="button"
+                                                class="toggle-btn scoreboard-btn"
+
+                                                th:classappend="${user.visibilityState}
+                                                ? 'scoreboard-hide-btn'
+                                                : 'scoreboard-show-btn'"
+
+                                                th:text="${user.visibilityState}
+                                                ? 'Hide'
+                                                : 'Display'"
+
                                                 th:attr="data-id=${user.id}">
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
 
                     </div>
 
                 </div>
+
             </div>
 
         </div>
-    </main>
 
-    <th:block th:replace="~{fragments/footer.html :: footer}" />
+    </div>
+
+</main>
+
+<th:block th:replace="~{fragments/footer.html :: footer}" />
 
 </body>
-
 </html>
