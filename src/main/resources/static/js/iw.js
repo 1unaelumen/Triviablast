@@ -196,7 +196,8 @@ function postImage(img, endpoint, name, filename) {
  */
 document.addEventListener("DOMContentLoaded", () => {
     if (config.socketUrl) {
-        let subs = config.admin ? ["/topic/admin", "/user/queue/updates"] : ["/user/queue/updates"]
+        let subs = config.admin ? ["/topic/admin", "/user/queue/updates", "/topic/scores"]
+         : ["/user/queue/updates", "/topic/scores"]
         if (config.topics && config.topics.length > 0) {
             subs = subs.concat(config.topics.split(",").map(t => `/topic/${t}`));
         }
