@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +31,16 @@ import jakarta.transaction.Transactional;
 public class GameController {
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+    
+    @ModelAttribute
+    public void populateModel(HttpSession session, Model model) {
+        for (String name : new String[] { "u", "url", "ws", "topics" }) {
+            model.addAttribute(name, session.getAttribute(name));
+        }
+    }
 
     @PostMapping("/start_single_game")
     public String startGame(@ModelAttribute GameSetupDTO setup,
@@ -88,16 +99,16 @@ public class GameController {
 
         if (isCorrect) {
             User user = (User) session.getAttribute("u");
-            if (user != null) {
-                User managedUser = entityManager.find(User.class, user.getId());
+            user = entityManager.find(User.class, user.getId());
 
-                if (managedUser != null) {
-                    managedUser.setTotalPoints(
-                            (managedUser.getTotalPoints() == null ? 0 : managedUser.getTotalPoints()) + 10);
+            if (user  != null) {
+                user .setTotalPoints(
+                        (user.getTotalPoints() == null ? 0 : user.getTotalPoints()) + 10);
 
-                    session.setAttribute("u", managedUser);
-                }
+                session.setAttribute("u", user);
             }
+            messagingTemplate.convertAndSend("/topic/scores", 
+              Map.of("username", user.getUsername(), "points", user.getTotalPoints()));
         }
 
         return new AnswerResDTO(isCorrect, q.getCorrectAnswer());

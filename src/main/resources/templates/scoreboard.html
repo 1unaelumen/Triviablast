@@ -116,6 +116,15 @@
 </main>
 
 <th:block th:replace="~{fragments/footer.html :: footer}" />
+<script>
+if (ws) {
+  const oldReceive = ws.receive;
+  ws.receive = (m) => {    
+    oldReceive(event);
+    console.log("Now I would update the scores for ", m.username, " with ", m.points);
+  }
+}
+</script>
 
 </body>
 </html>
