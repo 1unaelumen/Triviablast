@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TriviaBlast - Instructions</title>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <link rel="stylesheet" href="/css/instructions.css">
+</head>
+
+<body>
+
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<main class="instructions-page">
+    <div class="container instructions-container">
+        <div class="instructions-card">
+
+            <div class="instructions-badge">TRIVIABLAST GUIDE</div>
+
+            <h1 class="instructions-title">How to Play TriviaBlast</h1>
+
+            <p class="instructions-subtitle">
+                Learn the rules, game modes, scoring system and how to enjoy the quiz.
+            </p>
+
+            <a href="/authors" class="instructions-authors-btn">
+                Meet the Authors
+            </a>
+
+            <section class="instructions-section">
+                <h2>Singleplayer Mode</h2>
+
+                <div class="instructions-info-box">
+                    <h3>How it works</h3>
+                    <p>
+                        In singleplayer mode, you answer questions one by one and try to get
+                        the highest score possible.
+                    </p>
+                </div>
+
+                <ol class="instructions-list">
+                    <li>Choose the number of questions.</li>
+                    <li>Select a category and difficulty.</li>
+                    <li>Press Start Game.</li>
+                    <li>Select one answer for each question.</li>
+                    <li>Press Next Question to continue.</li>
+                    <li>When all questions are finished, the Game Over screen appears.</li>
+                </ol>
+            </section>
+
+            <section class="instructions-section">
+                <h2>Scoring</h2>
+
+                <ul class="instructions-list">
+                    <li>Correct answer: +10 points.</li>
+                    <li>Wrong answer: 0 points.</li>
+                    <li>You can only select one answer per question.</li>
+                    <li>The game ends when all questions are completed.</li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+</main>

@@ -65,7 +65,7 @@ public class SecurityConfig {
 						// vistas públicas
 						.requestMatchers(
 								"/user/register",
-								"/proposal",
+								"/instructions",
 								"/authors",
 								"/index",
 								"/join_game",

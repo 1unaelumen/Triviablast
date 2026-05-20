@@ -70,9 +70,9 @@ public class RootController {
         return "profile";
     }
 
-    @GetMapping("/proposal")
-    public String proposal(Model model) {
-        return "proposal";
+    @GetMapping("/instructions")
+    public String instructions(Model model) {
+        return "instructions";
     }
 
     @GetMapping("/single_game_setup")
