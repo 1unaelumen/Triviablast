@@ -39,6 +39,12 @@
                     Instructions
                 </a>
 
+                <a th:if="${u != null and u.hasRole('ADMIN')}"
+                    class="nav-link custom-nav-link"
+                    th:href="@{/admin/}">
+                    Admin Panel
+                </a>
+
                 <a class="nav-link custom-nav-link"
                    th:href="@{/user/scoreboard}">
                     Scoreboard
