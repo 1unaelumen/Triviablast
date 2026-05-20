@@ -80,6 +80,21 @@ document.addEventListener("DOMContentLoaded", () => {
         statusEl.textContent = `${currentIndex + 1}/${total} ${score} points`;
     }
 
+    function updateState(isFinished = false) {
+    fetch("/game/end_single_game", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            [config.csrf.header]: config.csrf.value
+        },
+        body: JSON.stringify({
+            currentIndex: currentIndex,
+            score: score,
+            finished: isFinished
+        })
+    }).catch(err => console.error("state update failed:", err));
+}
+
     function showQuestion(index) {
         const q = window.questions[index];
 
@@ -149,8 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.onclick = () => {
         currentIndex++;
         if (currentIndex < window.questions.length) {
+            updateState(false);
             showQuestion(currentIndex);
         } else {
+            updateState(true);
             document.getElementById("gameCard").innerHTML =
                 `<div class="text-center fs-4 fw-bold">
                     Game Over!<br>Your Score: ${score} points

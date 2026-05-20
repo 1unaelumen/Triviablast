@@ -21,6 +21,8 @@ import es.ucm.fdi.iw.controller.DTOs.AnswerResDTO;
 import es.ucm.fdi.iw.controller.DTOs.GameSetupDTO;
 import es.ucm.fdi.iw.controller.DTOs.QuestionDataPrivateDTO;
 import es.ucm.fdi.iw.controller.DTOs.QuestionDataPublicDTO;
+import es.ucm.fdi.iw.controller.DTOs.StateReqDTO;
+import es.ucm.fdi.iw.model.Game;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
@@ -43,6 +45,7 @@ public class GameController {
     }
 
     @PostMapping("/start_single_game")
+    @Transactional
     public String startGame(@ModelAttribute GameSetupDTO setup,
             Model model,
             HttpSession session) {
@@ -79,6 +82,37 @@ public class GameController {
         }
 
         session.setAttribute("questions", fullQuestions);
+        User user = (User) session.getAttribute("u");
+
+    if (user != null) {
+    User managedUser = entityManager.find(User.class, user.getId());
+
+    Game game = new Game();
+
+    game.setHost(managedUser);
+    game.setNumQuestions(setup.getQuestionCount());
+    game.setNumPlayers(1);
+    game.setGameState("IN_PROGRESS");
+
+    if (setup.getDifficulty() == null || setup.getDifficulty().isBlank()) {
+        game.setDifficulty("any");
+    } else {
+        game.setDifficulty(setup.getDifficulty());
+    }
+
+    game.setInternalState("""
+{
+            "currentIndex":0,
+            "score":0,
+            "finished":false
+        }
+    """);
+
+    entityManager.persist(game);
+
+    session.setAttribute("singleGameId", game.getId());
+}
+
         model.addAttribute("questions", publicQuestions);
 
         return "single_game";
@@ -113,4 +147,32 @@ public class GameController {
 
         return new AnswerResDTO(isCorrect, q.getCorrectAnswer());
     }
+
+    @PostMapping("/end_single_game")
+    @ResponseBody
+    @Transactional
+    public void endGame(HttpSession session, @RequestBody StateReqDTO state) {
+        User user = (User) session.getAttribute("u");
+        Long gameId = (Long) session.getAttribute("singleGameId");
+
+    Game game = entityManager.find(Game.class, gameId);
+
+    if (game == null) {
+        return;
+    }
+
+    game.setInternalState(String.format(
+            "{\"currentIndex\":%d,\"score\":%d,\"finished\":%s}",
+            state.getCurrentIndex(),
+            state.getScore(),
+            state.isFinished()
+    ));
+
+    if (state.isFinished()) {
+        game.setGameState("FINISHED");
+    } else {
+        game.setGameState("IN_PROGRESS");
+    }
+    }
+    
 }
