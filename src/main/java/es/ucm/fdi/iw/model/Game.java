@@ -38,6 +38,8 @@ public class Game {
 
     private String gameState;
 
+    private int score;
+
     @ManyToOne
     @JoinColumn(name = "host_id", nullable = false)
     private User host;

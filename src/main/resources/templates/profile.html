@@ -10,8 +10,7 @@
           href="/css/profile.css">
 </head>
 
-<body class="d-flex flex-column h-100" th:attr="data-open-tab=${openTab}">
-
+<body class="d-flex flex-column min-vh-100" th:attr="data-open-tab=${openTab}">
 <header th:replace="~{fragments/nav.html :: nav}"></header>
 
 <main class="profile-page flex-grow-1">
@@ -70,6 +69,57 @@
             </div>
 
         </div>
+
+<div class="profile-card game-history-card mt-4">
+    <h2 class="profile-name mb-4">
+        Game History
+    </h2>
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
+
+            <thead>
+            <tr>
+                <th>Game ID</th>
+                <th>Questions</th>
+                <th>Difficulty</th>
+                <th>Score</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="game : ${games}">
+
+                <td th:text="${game.id}">1</td>
+
+                <td th:text="${game.numQuestions}">
+                    10
+                </td>
+
+                <td th:text="${game.difficulty}">
+                    easy
+                </td>
+
+                <td th:text="${game.score}">
+                    0
+                </td>
+
+                <td th:text="${game.gameState}">
+                    FINISHED
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
     </div>
 
@@ -294,8 +344,6 @@
 </main>
 
 <th:block th:replace="~{fragments/footer.html :: footer}" />
-
-<script th:src="@{/js/triviablast.js}"></script>
 
 <script>
     window.addEventListener('DOMContentLoaded', function () {

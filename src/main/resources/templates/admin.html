@@ -36,7 +36,7 @@
         <div class="admin-card mb-4">
 
             <div class="admin-section-header">
-                <h2>Usuarios</h2>
+                <h2>Users</h2>
             </div>
 
             <div class="table-responsive">
@@ -60,8 +60,12 @@
 
                         <td th:text="${user.id}">1</td>
 
-                        <td class="fw-bold" th:text="${user.username}">
-                            paco
+                        <td class="fw-bold">
+                            <a th:href="@{/user/{id}(id=${user.id})}"
+                            th:text="${user.username}"
+                            class="admin-user-link">
+                                paco
+                            </a>
                         </td>
 
                         <td th:text="${user.email}">
@@ -117,22 +121,39 @@
 
         </div>
 
-        <div class="admin-card">
+            <div class="admin-card mt-4">
 
-            <div class="admin-section-header">
-                <h2>Últimos 5 mensajes del sistema</h2>
-
-                <button id="refresh"
-                        class="admin-refresh-btn">
-                    Actualizar vía AJAX
-                </button>
-            </div>
-
-            <div class="admin-messages-box">
-                <table id="messages"></table>
-            </div>
-
+        <div class="admin-section-header">
+            <h2>Game History</h2>
         </div>
+
+        <div class="table-responsive">
+            <table class="table admin-table align-middle">
+                <thead>
+                <tr>
+                    <th>Game ID</th>
+                    <th>Player</th>
+                    <th>Questions</th>
+                    <th>Difficulty</th>
+                    <th>Score</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="game : ${games}">
+                    <td th:text="${game.id}">1</td>
+                    <td th:text="${game.host.username}">player</td>
+                    <td th:text="${game.numQuestions}">10</td>
+                    <td th:text="${game.difficulty}">easy</td>
+                    <td th:text="${game.score}">0</td>
+                    <td th:text="${game.gameState}">FINISHED</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 
     </div>
 

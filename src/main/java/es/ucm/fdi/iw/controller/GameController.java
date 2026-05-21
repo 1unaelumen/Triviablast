@@ -93,7 +93,7 @@ public class GameController {
     game.setNumQuestions(setup.getQuestionCount());
     game.setNumPlayers(1);
     game.setGameState("IN_PROGRESS");
-
+    game.setScore(0);
     if (setup.getDifficulty() == null || setup.getDifficulty().isBlank()) {
         game.setDifficulty("any");
     } else {
@@ -167,6 +167,7 @@ public class GameController {
             state.getScore(),
             state.isFinished()
     ));
+    game.setScore(state.getScore());
 
     if (state.isFinished()) {
         game.setGameState("FINISHED");

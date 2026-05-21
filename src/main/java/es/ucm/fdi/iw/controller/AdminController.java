@@ -56,6 +56,12 @@ public class AdminController {
     log.info("Admin acaba de entrar");
     model.addAttribute("users",
         entityManager.createQuery("select u from User u").getResultList());
+
+        model.addAttribute("games",
+        entityManager.createQuery(
+            "select g from Game g order by g.id desc",
+            Game.class
+        ).getResultList());
     return "admin";
   }
 

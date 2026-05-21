@@ -4,6 +4,7 @@ import es.ucm.fdi.iw.LocalData;
 //import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.Transferable;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.Game;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -127,6 +128,15 @@ public class UserController {
     if (user == null) {
       return "redirect:/login";
     }
+
+    List<Game> games = entityManager.createQuery(
+            "select g from Game g where g.host.id = :userId order by g.id desc",
+            Game.class
+    )
+    .setParameter("userId", user.getId())
+    .getResultList();
+
+    model.addAttribute("games", games);
     model.addAttribute("user", user);
     return "profile";
   }
@@ -137,7 +147,14 @@ public class UserController {
   @GetMapping("{id}")
   public String index(@PathVariable long id, Model model, HttpSession session) {
     User target = entityManager.find(User.class, id);
+    List<Game> games = entityManager.createQuery(
+            "select g from Game g where g.host.id = :userId order by g.id desc",
+            Game.class
+    )
+    .setParameter("userId", target.getId())
+    .getResultList();
     model.addAttribute("user", target);
+    model.addAttribute("games", games);
     return "profile";
   }
 
