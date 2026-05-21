@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     initAuthToggle();
-    initBoard();
+    //initBoard();
     initTableToggleButtons();
-    initTrivia();
+    //initTrivia();
 
 });
 
@@ -161,22 +161,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 }));
     }
 
-    nextBtn.onclick = () => {
-        currentIndex++;
-        if (currentIndex < window.questions.length) {
-            updateState(false);
-            showQuestion(currentIndex);
-        } else {
-            updateState(true);
-            document.getElementById("gameCard").innerHTML =
-                `<div class="text-center fs-4 fw-bold">
-                    Game Over!<br>Your Score: ${score} points
-                </div>`;
-            nextBtn.hidden = true;
-        }
-    };
+    if (nextBtn) {
+        nextBtn.onclick = () => {
+            currentIndex++;
+            if (currentIndex < window.questions.length) {
+                updateState(false);
+                showQuestion(currentIndex);
+            } else {
+                updateState(true);
+                document.getElementById("gameCard").innerHTML =
+                    `<div class="text-center fs-4 fw-bold">
+                        Game Over!<br>Your Score: ${score} points
+                    </div>`;
+                nextBtn.hidden = true;
+            }
+        };
+    }
 
-    showQuestion(currentIndex);
+    if (window.questions && window.questions.length > 0) {
+        showQuestion(currentIndex);
+    }
 });
 
 /* =========================
@@ -186,4 +190,79 @@ function decodeHtml(html) {
     const txt = document.createElement("textarea");
     txt.innerHTML = html;
     return txt.value;
+}
+
+/* =========================
+   GLOBAL SCORE NOTIFICATIONS
+========================= */
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        if (!ws) return;
+
+        ws.subscribe("/topic/scores");
+
+        const oldReceive = ws.receive;
+
+        ws.receive = (m) => {
+
+            oldReceive(m);
+
+            console.log("GLOBAL WS:", m);
+
+            if (m.username && m.points !== undefined) {
+
+                showGlobalNotification(
+                    m.username + " now has " + m.points + " points!"
+                );
+
+                // update scoreboard table if present
+                const rows = document.querySelectorAll("tbody tr");
+
+                rows.forEach(row => {
+
+                    const usernameCell =
+                        row.querySelector("td:nth-child(2)");
+
+                    if (!usernameCell) return;
+
+                    if (usernameCell.textContent.trim() === m.username) {
+
+                        const pointsCell =
+                            row.querySelector(".score-points");
+
+                        if (pointsCell) {
+                            pointsCell.textContent =
+                                m.points + " pts";
+                        }
+                    }
+                });
+            }
+        };
+
+    }, 500);
+});
+
+function showGlobalNotification(text) {
+
+    const notif = document.createElement("div");
+
+    notif.className = "global-score-notification";
+
+    notif.textContent = text;
+
+    document.body.appendChild(notif);
+
+    setTimeout(() => {
+        notif.classList.add("show");
+    }, 50);
+
+    setTimeout(() => {
+
+        notif.classList.remove("show");
+
+        setTimeout(() => notif.remove(), 500);
+
+    }, 3000);
 }

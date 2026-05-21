@@ -284,3 +284,56 @@ select g1_0.id,g1_0.code,g1_0.difficulty,g1_0.game_state,g1_0.host_id,g1_0.inter
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1447)
+2026-05-21 18:06:20.558785+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM IWUSER NUM_PLAYERS [*]CODE CODE"; SQL statement:
+SELECT * FROM IWUSER NUM_PLAYERS CODE CODE [42000-232]
+2026-05-21 18:06:29.133953+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM IWUSER NUM_PLAYERS [*]CODE CODE DIFFICULTY GAME_STATE"; SQL statement:
+SELECT * FROM IWUSER NUM_PLAYERS CODE CODE DIFFICULTY GAME_STATE [42000-232]
+2026-05-21 18:06:41.771133+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]GAME_ID"; expected "GRANT"; SQL statement:
+GAME_ID [42001-232]
+2026-05-21 18:06:42.656129+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]GAME_ID"; expected "GRANT"; SQL statement:
+GAME_ID [42001-232]
+2026-05-21 18:06:45.233608+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]GAME_ID GAME_CATEGORIES"; expected "GRANT"; SQL statement:
+GAME_ID GAME_CATEGORIES [42001-232]
+2026-05-21 18:07:00.065769+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]GAME_CATEGORIES  GAME"; expected "GRANT"; SQL statement:
+GAME_CATEGORIES  GAME [42001-232]
+2026-05-21 18:07:01.543806+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]GAME_CATEGORIES  GAME"; expected "GRANT"; SQL statement:
+GAME_CATEGORIES  GAME [42001-232]
+2026-05-21 18:07:02.360020+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]GAME_CATEGORIES  GAME"; expected "GRANT"; SQL statement:
+GAME_CATEGORIES  GAME [42001-232]
+2026-05-21 18:07:35.541721+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * [*]GAME_CATEGORIES"; SQL statement:
+SELECT * GAME_CATEGORIES [42000-232]
+2026-05-21 18:07:56.311949+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * [*]GAME_CATEGORIES\000d\000aGAME ID"; SQL statement:
+SELECT * GAME_CATEGORIES
+GAME ID [42000-232]
+2026-05-21 18:32:41.451549+02:00 jdbc[16]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:217)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:134)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:137)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:360)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:202)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:461)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:724)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:703)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 16 more
