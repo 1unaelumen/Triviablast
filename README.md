@@ -1,63 +1,53 @@
 # TriviaBlast
 
-**Juego de preguntas y respuestas en línea** para jugar de forma individual.
+**Juego de preguntas y respuestas en línea** Online trivia game designed for individual play.
 
-## Propuesta
+## Proposal
 
-### Descripción
+### Description
 
-TriviaBlast es un juego interactivo que permite a los usuarios practicar y ganar puntos en partidas individuales, o competir en un tablero clásico con categorías por colores en salas privadas. Las preguntas se obtienen de la [Open Trivia Database (OpenTDB)](https://opentdb.com/), ofreciendo una amplia variedad de categorías y niveles de dificultad.
+TriviaBlast is an interactive game that allows users to practice and earn points in single-player matches, or compete on a classic color-category board in private multiplayer rooms. Questions are obtained from the [Open Trivia Database (OpenTDB)](https://opentdb.com/), offering a wide variety of categories and difficulty levels.
 
 ### Roles y permisos
 
-| Rol           | Permisos                                                                 |
+| Role           | Permissions                                                                 |
 |---------------|--------------------------------------------------------------------------|
-| **Jugador**   | Gestionar cuenta, jugar partidas individuales, ver leaderboard. |
-| **Administrador** | Ocultar, editar, borrar o restaurar visibilidad de usuarios. |
+| **Player**   | Manage account, play single-player matches, view leaderboard. |
+| **Administrator** | Hide, edit, delete, or restore user visibility, view users' game history to find if there is a cheating. |
 
-#### Partida individual
+#### Single-player mode
 
-- Configuración personalizada: número de preguntas, categoría y dificultad.
-- Límite de tiempo por pregunta.
-- Puntuación basada en dificultad y rapidez al responder.
+- Custom configuration: Seelcting number of questions, category, difficulty.
+- Score based on difficulty and response speed.
 
-### Sistema de puntos y leaderboard
+### Point system and leaderboard
 
-- Los puntos se obtienen según el tipo de partida y se reflejan en el leaderboard (solo visible para usuarios registrados).
-- Los jugadores aparecen ordenados de mayor a menor puntuación.
-- Los administradores pueden ocultar jugadores del leaderboard.
+- Points are earned depending on the game mode and are reflected on the leaderboard (visible only to registered users).
+- Players are ranked from highest to lowest score.
+- Administrators can hide players from the leaderboard.
 
-### Flujo de juego resumido
+### Game flow
 
-1. Registro o inicio de sesión.
-2. Selección de modalidad de juego.
-3. Desarrollo de la partida.
-4. Cálculo de puntos y actualización del leaderboard.
+1. Register or log in.
+2. Design your own game.
+3. Play the game
+4. Calculate points and update leaderboard.
 
-## Estructura de la BD
+### Database Tables
 
-![Database Schema](DatabaseSchema.png)
+- **IWUser**: Stores the player's id, avatar, email, password, total points, roles, usernames and visibility states.
+- **Game**: Stores each game's number of questions, id, playing user's id, difficulty, state and scores.
 
-## Estado de la implementación
+### Completed
 
-### Terminada
+- **Sign in or up**: Account registration and login are fully implemented. Error cases are handled correctly (for example, when two different passwords are entered while creating an account). After creating an account, the user is automatically logged in.
+- **Home page**: Correctly implemented.  Once logged in, users can start a single-player game. 
+- **Single-player game**: The first one, related to game creation and settings, is fully implemented. The question types correspond to those provided by the API being used. The actual single-player game is also completely implemented. Questions and possible answers are displayed. If the player answers incorrectly, the correct answer is shown afterward. It is worth mentioning that question validation is handled entirely in the backend, making cheating impossible (to verify that the frontend never receives the correct answers, start a single-player game, open the browser console, and type window.questions). There is also a button to quit the game, and the interface displays the current question number and accumulated points. Each correct answer gives the user 10 points.
+- **User profile**: Displays the user’s profile picture, username, and total points and game history. It also allows users to log out or completely delete their account. The edit button allows changing the profile picture, username, email, or password (which must be validated using the previous password). 
+- **Scoreboard**: Displays registered users along with their points. If an administrator decides to hide a user, the visibility status is updated in the database, and the user no longer appears in the table for normal users.
+- **Visual design**: Interface designed at the design application Figma. Used vibrant colours and implemented attractive design for the players to enjoy. While implementing, Figma's Developer Tool extension used to take the structure. 
+- **Admin page**: Admin can see the users and related informations at the user table. Below the table, you will find the gam history where all games are visible. If admin suspects of one user, can click to user's username and see their profile and their own game history to examine.
 
-- **Sign in or up**: La implementación del registro de una cuenta o del inicio de sesión está correctamente implementada, se manejan casos de error (como cuando se insertan dos contraseñas distintas al crear una cuenta). Al crear cuenta se inicia la sesión automáticamente.
-- **Inicio**: Implementado correctamente. Dispone de un botón para unirse a una partida multijugador mediante un código cuando no se ha iniciado sesión. Una vez iniciada la sesión, se pueden ver también los botones para crear una partida multijugador o empezar una partida de un solo jugador. Actualmente solo este último hace algo.
-- **Partida individual**: Dispone de dos vistas. La primera, referida a la creación de la partida con sus ajustes, está completamente implementada. Los tipos de preguntas se corresponden a los de la API usada. La partida de un solo jugador en sí también se encuentra completamente implementada. Se muestran las preguntas y posibles respuestas. Al fallar una pregunta se muestra cual hubiese sido la correcta. Cabe mencionar que la validación de las preguntas se realiza completamente en el backend, por lo que se imposibilita el hacer trampas (para comprobar que el frontend nunca recibe las respuestas correctas, inicie una partida individual, abra la consola del navegador e introduzca `window.questions`). Hay un botón para abandonar la partida, y se muestra en qué número de pregunta y cantidad de puntos se han acumulado por el momento. Al acertar una pregunta el usuario recibe 10 puntos.
-- **Perfil de usuario**: Muestra la foto de perfil, nombre, y cantidad de puntos del usuario. También le permite cerrar la sesión o borrar completamente su cuenta. El botón `edit`, le permite cambiar su foto de perfil, su nombre y correo, o su contraseña (acción que se deberá validar con la contraseña anterior). En el futuro, cuando se disponga de la funcionalidad de las partidas multijugador, podremos mostrarlas en el perfil del usuario (como retrospectiva).
-- **Scoreboard**: Muestra los usuarios registrados junto con sus puntos. Si un administrador decide esconder a un usuario, su estatus de visibilidad se actualiza en la base de datos, y pasa a no aparecer en la tabla para usuarios normales.
-
-### En progreso
-
-- **Diseño visual**: Actualmente el diseño visual de la aplicación sigue en progreso. Aunque la interfaz ya es funcional, continuamos trabajando en mejorar la estética, la organización de los elementos y la experiencia general del usuario para futuras versiones.
-
-- **Barra de navegación**: Actualmente responde a una estructura deseada para el debugging de la aplicación y la visualización de las vistas que siguen siendo estáticas. Sin embargo, en el futuro tendrá una estructura más común para una aplicación online práctica (casa, perfil/login), mientras que las vistas referidas al juego serán accesibles desde los botones correspondientes en la "casa".
-
-### Otras cosas
-
-- Actualización de pantallas mediante AJAX (en scoreboard)
-- Actualmente, la aplicación no dispone de pruebas, aunque se realizarán.
 
 ### Lista de usuarios en la BD
 
