@@ -48,8 +48,11 @@ TriviaBlast is an interactive game that allows users to practice and earn points
 - **Visual design**: Interface designed at the design application Figma. Used vibrant colours and implemented attractive design for the players to enjoy. While implementing, Figma's Developer Tool extension used to take the structure. 
 - **Admin page**: Admin can see the users and related informations at the user table. Below the table, you will find the gam history where all games are visible. If admin suspects of one user, can click to user's username and see their profile and their own game history to examine.
 
-
-### Lista de usuarios en la BD
+###Use of AI
+- The AI used in this project is ChatGPT. AI used to get help when get errors/problems that the group could not understand/solve.
+- For the UI implementation, Figma Developer Tool used to pull the design from the application.
+- 
+### Test users at DB
 
 USERNAME : infinite.alex5
 PASSWORD : 1234
