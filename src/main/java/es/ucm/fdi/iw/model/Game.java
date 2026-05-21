@@ -41,13 +41,13 @@ public class Game {
     @ManyToOne
     @JoinColumn(name = "host_id", nullable = false)
     private User host;
-
+/* 
     @OneToMany(mappedBy = "game")
     private List<Player> players = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true) //if game is deleted then messages are deleted too
     private List<Message> messages = new ArrayList<>();
-
+*/
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int CODE_LENGTH = 6;
     private static final java.security.SecureRandom RANDOM = new java.security.SecureRandom();

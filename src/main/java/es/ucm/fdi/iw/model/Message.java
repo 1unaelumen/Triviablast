@@ -20,18 +20,18 @@ import org.apache.logging.log4j.Logger;
 import lombok.Data;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
-
+/* 
 /**
  * A message that users can send each other.
  *
- */
+ 
 @Entity
 @Data
 public class Message implements Transferable<Message.Transfer> {
 
 	private static Logger log = LogManager.getLogger(Message.class);
 
-	/*
+	
 	 * SCHEMA:
 	 * - ID
 	 * - SENDER
@@ -39,7 +39,7 @@ public class Message implements Transferable<Message.Transfer> {
 	 * - TEXT
 	 * - DATE_SENT
 	 * - ADMIN_ONLY (true -> only admins receive it)
-	 */
+	 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -60,11 +60,11 @@ public class Message implements Transferable<Message.Transfer> {
 	@Column(nullable = false)
 	private boolean adminOnly = false; // if true, the message is addressed to the admins of the game
 
-	/**
+	
 	 * Objeto para persistir a/de JSON
 	 * 
 	 * @author mfreire
-	 */
+	 
 	@Getter
 	@AllArgsConstructor
 	public static class Transfer {
@@ -90,3 +90,4 @@ public class Message implements Transferable<Message.Transfer> {
 		return new Transfer(this);
 	}
 }
+*/

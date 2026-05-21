@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.ucm.fdi.iw.model.Game;
-import es.ucm.fdi.iw.model.Message;
+//import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.User;
 import io.karatelabs.js.Context;
 import io.karatelabs.js.Interpreter;
@@ -125,7 +125,7 @@ public Map<String, Long> usersCount() {
       "exampleExternalVar", "patata"));
     return Map.of("result", result.toString());
   }
-
+  /* 
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
 
@@ -135,7 +135,8 @@ public Map<String, Long> usersCount() {
    * @param code of target game (source user is from ID)
    * @param o  JSON-ized message, similar to {"message": "text goes here"}
    * @throws JsonProcessingException
-   */
+   
+
   @PostMapping("/game/{code}")
   @ResponseBody
   @Transactional
@@ -180,7 +181,7 @@ public Map<String, Long> usersCount() {
    * @param code of target game (source user is from ID)
    * @param o  JSON-ized message, similar to {"message": "text goes here"}
    * @throws JsonProcessingException
-   */
+   
   @GetMapping("/game/{code}")
   @ResponseBody
   @Transactional
@@ -205,5 +206,5 @@ public Map<String, Long> usersCount() {
         target.getMessages().stream()
           .map(Message::toTransfer).toArray()
       ));
-  }
+  }*/
 }

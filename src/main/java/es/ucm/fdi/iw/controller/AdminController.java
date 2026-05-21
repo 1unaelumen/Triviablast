@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.iw.model.Game;
-import es.ucm.fdi.iw.model.Player;
-import es.ucm.fdi.iw.model.Message;
+//import es.ucm.fdi.iw.model.Player;
+//import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.Transferable;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
@@ -89,6 +89,7 @@ public class AdminController {
   /**
    * Returns JSON with all received messages
    */
+  /* 
   @GetMapping(path = "all-messages", produces = "application/json")
   @Transactional // para no recibir resultados inconsistentes
   @ResponseBody // para indicar que no devuelve vista, sino un objeto (jsonizado)
@@ -100,7 +101,7 @@ public class AdminController {
     return query.getResultList().stream().map(Transferable::toTransfer)
         .collect(Collectors.toList());
   }
-
+*/
   @RequestMapping("/populate")
   @ResponseBody
   @Transactional
@@ -122,7 +123,7 @@ public class AdminController {
     g2.setNumPlayers(0);
     g2.setGameState("waiting");
     entityManager.persist(g2);
-
+    /* 
     // create some users & assign to groups
     for (int i = 0; i < 15; i++) {
       User u = new User();
@@ -147,7 +148,9 @@ public class AdminController {
         p.setPoints(0);
         entityManager.persist(p);
       }
-    }
+    } */
     return "{\"admin\": \"populated\"}";
-  }
+  
+    }
+   
 }

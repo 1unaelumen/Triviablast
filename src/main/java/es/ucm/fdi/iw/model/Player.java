@@ -2,7 +2,7 @@ package es.ucm.fdi.iw.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+/* 
 @Entity
 @Data
 public class Player {
@@ -23,3 +23,4 @@ public class Player {
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 }
+*/

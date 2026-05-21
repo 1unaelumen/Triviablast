@@ -50,20 +50,20 @@ public class User implements Transferable<User.Transfer> {
     private boolean enabled = true;
 
     private String roles = "USER";
-
-
+/*
+    // Games played by this user
+    @OneToMany(mappedBy = "user")
+    private List<Player> players = new ArrayList<>();
+    
     @OneToMany(mappedBy = "sender")
     private List<Message> sent = new ArrayList<>();
-
+ */
 
     // Games created by this user
     @OneToMany(mappedBy = "host")
     private List<Game> partidasCreadas = new ArrayList<>();
 
-    // Games played by this user
-    @OneToMany(mappedBy = "user")
-    private List<Player> players = new ArrayList<>();
-    
+
 
     public boolean hasRole(String role) {
         if (roles == null) return false;
@@ -75,8 +75,8 @@ public class User implements Transferable<User.Transfer> {
     public static class Transfer {
         private long id;
         private String username;
-        private int totalReceived;
-        private int totalSent;
+        //private int totalReceived;
+        //private int totalSent;
         private String groups;
     }
 
@@ -85,8 +85,8 @@ public class User implements Transferable<User.Transfer> {
         return new Transfer(
             id,
             username,
-            0,
-            sent.size(),
+            //0,
+            //sent.size(),
             ""
         );
     }

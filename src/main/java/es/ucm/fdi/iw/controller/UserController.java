@@ -1,7 +1,7 @@
 package es.ucm.fdi.iw.controller;
 
 import es.ucm.fdi.iw.LocalData;
-import es.ucm.fdi.iw.model.Message;
+//import es.ucm.fdi.iw.model.Message;
 import es.ucm.fdi.iw.model.Transferable;
 import es.ucm.fdi.iw.model.User;
 
@@ -338,7 +338,7 @@ public class UserController {
 
   /**
    * Returns JSON with all received messages
-   */
+  
   @GetMapping(path = "received", produces = "application/json")
   @Transactional // para no recibir resultados inconsistentes
   @ResponseBody // para indicar que no devuelve vista, sino un objeto (jsonizado)
@@ -359,9 +359,9 @@ public class UserController {
      * u.getUsername(), u.getReceived().size());
      * return
      * u.getReceived().stream().map(Transferable::toTransfer).collect(Collectors.toList());
-     **/
+     
   }
-
+**/
   /**
    * Returns JSON with count of unread messages
    */
@@ -382,7 +382,7 @@ public class UserController {
    * @param id of target user (source user is from ID)
    * @param o  JSON-ized message, similar to {"message": "text goes here"}
    * @throws JsonProcessingException
-   */
+   
   @PostMapping("/{id}/msg")
   @ResponseBody
   @Transactional
@@ -414,7 +414,7 @@ public class UserController {
      * rootNode.put("text", text);
      * rootNode.put("id", m.getId());
      * String json = mapper.writeValueAsString(rootNode);
-     */
+    
     // persiste objeto a json usando Jackson
     String json = mapper.writeValueAsString(m.toTransfer());
 
@@ -423,7 +423,7 @@ public class UserController {
     messagingTemplate.convertAndSend("/user/" + u.getUsername() + "/queue/updates", json);
     return "{\"result\": \"message sent.\"}";
   }
-
+ */
   @PostMapping("/{id}/delete")
   @Transactional
   public String deleteUser(@PathVariable long id, HttpSession session) {
