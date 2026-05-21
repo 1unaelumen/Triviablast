@@ -22,7 +22,8 @@
             <button class="profile-edit-btn"
                     type="button"
                     data-bs-toggle="modal"
-                    data-bs-target="#miModal">
+                    data-bs-target="#miModal"
+                    th:if="${!viewOnly}">
                 Edit
             </button>
 
@@ -42,7 +43,7 @@
                 <strong th:text="${user.totalPoints}">0</strong>
             </div>
 
-            <div class="profile-actions">
+            <div class="profile-actions" th:if="${!viewOnly}">
 
                 <form th:action="@{/logout}" method="post">
                     <button type="submit"
@@ -125,7 +126,7 @@
 
     <!-- EDIT PROFILE MODAL -->
 
-    <div class="modal fade" id="miModal" tabindex="-1">
+    <div class="modal fade" id="miModal" tabindex="-1" th:if="${!viewOnly}">
 
         <div class="modal-dialog modal-dialog-centered">
 

@@ -55,14 +55,12 @@
                     Profile
                 </a>
 
-                <th:block th:unless="${u}">
+                <th:block th:if="${u == null}">
 
                     <a class="custom-login-btn"
                        th:href="@{/login}"
                        sec:authorize="isAnonymous()">
-
-                        Login
-
+                       Login
                     </a>
 
                 </th:block>

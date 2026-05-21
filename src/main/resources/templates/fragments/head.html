@@ -60,29 +60,30 @@
 
         <!-- CONFIG -->
 
-      <script th:inline="javascript">
+      <script type="text/javascript">
 
-      const config = {
+            const config = {
 
-            socketUrl: /*[[${ws}]]*/ "",
+                socketUrl: "[[${ws}?:'']]",
 
-            rootUrl: /*[[${url}]]*/ "",
+                rootUrl: "[[${url}?:'']]",
 
-            csrf: {
-                  header: /*[[${_csrf.headerName}]]*/ "",
-                  name: /*[[${_csrf.parameterName}]]*/ "",
-                  value: /*[[${_csrf.token}]]*/ ""
-            },
+                csrf: {
+                    header: "[[${_csrf.headerName}]]",
+                    name: "[[${_csrf.parameterName}]]",
+                    value: "[[${_csrf.token}]]"
+                },
 
-            admin: /*[[${u != null && u.hasRole('ADMIN')}]]*/ false,
+                admin: "[[${u != null && u.hasRole('ADMIN')} ? true : false]]",
 
-            userId: /*[[${u != null ? u.id : -1}]]*/ -1,
+                userId: +"[[${u != null} ? ${u.id} : -1]]",
 
-            topics: /*[[${topics}]]*/ ""
-      };
+                topics: "[[${topics}?:'']]",
+            };
 
-      </script>
+            config.admin = config.admin == "true";
 
+        </script>
     </th:block>
 
 </head>

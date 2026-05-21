@@ -138,6 +138,7 @@ public class UserController {
 
     model.addAttribute("games", games);
     model.addAttribute("user", user);
+    model.addAttribute("viewOnly", false);
     return "profile";
   }
 
@@ -147,6 +148,7 @@ public class UserController {
   @GetMapping("{id}")
   public String index(@PathVariable long id, Model model, HttpSession session) {
     User target = entityManager.find(User.class, id);
+    User requester = (User) session.getAttribute("u");
     List<Game> games = entityManager.createQuery(
             "select g from Game g where g.host.id = :userId order by g.id desc",
             Game.class
@@ -155,6 +157,9 @@ public class UserController {
     .getResultList();
     model.addAttribute("user", target);
     model.addAttribute("games", games);
+
+    model.addAttribute("viewOnly",
+            requester.hasRole("ADMIN") && requester.getId() != target.getId());
     return "profile";
   }
 

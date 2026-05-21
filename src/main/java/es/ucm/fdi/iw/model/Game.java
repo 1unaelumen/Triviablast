@@ -15,6 +15,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_gen")
     @SequenceGenerator(name = "game_gen", sequenceName = "game_seq", allocationSize = 1)
     private long id;
+    
 
     @Column(nullable = false)
     private int numQuestions;
